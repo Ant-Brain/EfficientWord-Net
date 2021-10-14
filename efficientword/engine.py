@@ -260,7 +260,7 @@ if __name__ == "__main__" :
     import os
     from efficientword.streams import SimpleMicStream
     from efficientword import samples_loc
-
+    print(samples_loc)
     alexa_hw = HotwordDetector(
             hotword="Alexa",
             reference_file = os.path.join(samples_loc,"alexa_ref.json"),
