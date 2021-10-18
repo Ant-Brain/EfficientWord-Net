@@ -19,6 +19,7 @@ class HotwordDetector :
         Intializes hotword detector instance
 
         Inp Parameters:
+
             hotword : hotword in a string
 
             reference_file : path of reference file for a hotword generated 
@@ -26,6 +27,7 @@ class HotwordDetector :
 
             threshold: float value between 0 and 1 , min similarity score
             required for a match
+
         """
         assert isfile(reference_file), \
             "Reference File Path Invalid"
@@ -47,10 +49,10 @@ class HotwordDetector :
 
     def getMatchScoreVector(self,inp_vec:np.array) -> float :
         """
+        **Use this directly only if u know what you are doing**
+
         Returns the match score from 0 to 1 for an embedding with
         given reference file
-
-        Use this directly only if u know what you are doing
         """
 
         assert inp_vec.shape == (1,128), \
@@ -74,10 +76,10 @@ class HotwordDetector :
 
     def checkVector(self,inp_vec:np.array) -> bool:
         """
+        **Use this directly only if u know what you are doing**
+
         Checks if given a given embedding matches with
         given reference file
-
-        Use this directly only if u know what you are doing
         """
 
         assert inp_vec.shape == (1,128), \
@@ -85,13 +87,37 @@ class HotwordDetector :
 
         return self.getMatchScoreVector(inp_vec) > self.threshold
 
-    def getMatchScoreFrame(self,inp_audio_frame:np.array) -> float :
+    def getMatchScoreFrame(
+            self,
+            inp_audio_frame:np.array,
+            unsafe:bool = False) -> float :
         """
-        Returns the match score from 0 to 1 for an embedding with
-        given reference file
+        Converts given audio frame to embedding and checks for similarity
+        with given reference file
 
-        Use this directly only if u know what you are doing
+        Inp Parameters:
+
+            inp_audio_frame : np.array of 1channel 1 sec 16000Hz sampled audio 
+            frame
+            unsafe : bool value, set to False by default to prevent engine
+            processing continuous speech , to minimalize false positives
+
+        **Note : change unsafe to True only if you know what you are doing**
+
+        Out Parameters:
+
+            float , ranges btw 0 to 1 . Higher value denoting higher match
+
         """
+
+        if(not unsafe):
+            upperPoint = max(
+                (
+                    inp_audio_frame/inp_audio_frame.max()
+                )[:RATE//10]
+            )
+            if(upperPoint > 0.2):
+                return False
 
         assert inp_audio_frame.shape == (RATE,), \
             f"Audio frame needs to be a 1 sec {RATE}Hz sampled vector"
@@ -104,20 +130,23 @@ class HotwordDetector :
 
 
     def checkFrame(self,inp_audio_frame:np.array,unsafe:bool = False) -> bool :
-        f"""
+        """
         Converts given audio frame to embedding and checks for similarity
         with given reference file
 
         Inp Parameters:
-            inp_audio_frame : np.array of 1channel 1 sec {RATE}Hz sampled audio 
+
+            inp_audio_frame : np.array of 1channel 1 sec 16000Hz sampled audio 
             frame
             unsafe : bool value, set to False by default to prevent engine
             processing continuous speech , to minimalize false positives
 
-        Note : change unsafe to True only if you know what you are doing
+        **Note : change unsafe to True only if you know what you are doing**
 
         Out Parameters:
+
             bool , conveys if given frame has a likely match of the hotword
+
         """
 
         assert inp_audio_frame.shape == (RATE,), \
@@ -148,6 +177,11 @@ class MultiHotwordDetector :
         self,
         detector_collection:HotwordDetectorArray,
     ):
+        """
+        Inp Parameters:
+
+            detector_collection : List/Tuple of HotwordDetector instances
+        """
         assert len(detector_collection)>1, \
             "Pass atleast 2 HotwordDetector instances"
 
@@ -162,21 +196,24 @@ class MultiHotwordDetector :
             inp_audio_frame:np.array,
             unsafe:bool=False
             ) -> MatchInfo :
-        f"""
+        """
         Returns the best match hotword for a given audio frame
         within respective thresholds , returns None if found none
 
         Inp Parameters:
-            inp_audio_frame : 1 sec {RATE}Hz frq sampled audio frame 
+
+            inp_audio_frame : 1 sec 16000Hz frq sampled audio frame 
 
             unsafe : bool value, set to False by default to prevent engine
             processing continuous speech , to minimalize false positives
 
-        Note : change unsafe to True only if you know what you are doing
+        **Note : change unsafe to True only if you know what you are doing**
 
         Out Parameters:
+
             (detector,score) : returns detector of best matched hotword ,
             with its score
+
         """
         assert inp_audio_frame.shape == (RATE,), \
             f"Audio frame needs to be a 1 sec {RATE}Hz sampled vector"
@@ -210,12 +247,13 @@ class MultiHotwordDetector :
             inp_audio_frame:np.array,
             unsafe:bool=False
             ) -> MatchInfoArray :
-        f"""
+        """
         Returns the best match hotword for a given audio frame
         within respective thresholds , returns None if found none
 
         Inp Parameters:
-            inp_audio_frame : 1 sec {RATE}Hz frq sampled audio frame 
+
+            inp_audio_frame : 1 sec 16000Hz frq sampled audio frame
 
             unsafe : bool value, set to False by default to prevent engine
             processing continuous speech , to minimalize false positives
@@ -223,8 +261,10 @@ class MultiHotwordDetector :
         Note : change unsafe to True only if you know what you are doing
 
         Out Parameters:
+
             [ (detector,score) ,... ] : returns list of matched detectors 
             with respective scores
+
         """
         assert inp_audio_frame.shape == (RATE,), \
             f"Audio frame needs to be a 1 sec {RATE}Hz sampled vector"

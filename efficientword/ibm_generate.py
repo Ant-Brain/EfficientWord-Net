@@ -1,3 +1,11 @@
+"""
+Needs to be run directly in cli via
+`python -m efficientword.ibm_generate`
+
+Can be used to artificially synthesize audio samples for a given hotword
+Uses ibm's demo of cloud neural voice , hence try to use it as low as possible
+"""
+
 import requests
 import json
 import shutil
@@ -5,7 +13,7 @@ from os.path import isdir
 from os import mkdir
 from time import sleep
 
-def getSoundFile(word:str,voice:str):
+def _getSoundFile(word:str,voice:str):
     session = requests.Session()
 
     data = {
@@ -31,12 +39,14 @@ def getSoundFile(word:str,voice:str):
             shutil.copyfileobj(audio_response.raw,f)
         return True
     return False
+
 USA_VOICES = ["en-US_OliviaV3Voice","en-US_HenryV3Voice","en-US_MichaelV3Voice","en-US_AllisonV3Voice"]
 UK_VOICES = ["en-GB_CharlotteV3Voice","en-GB_KateV3Voice","en-GB_JamesV3Voice"]
 
-WORD = str(input("Enter your wakeword:"))
-for voice in [*USA_VOICES,*UK_VOICES]:
-    print(voice)
-    getSoundFile(WORD,voice)
-    sleep(2)
+if __name__=="__main__":
+    WORD = str(input("Enter your wakeword:"))
+    for voice in [*USA_VOICES,*UK_VOICES]:
+        print(voice)
+        _getSoundFile(WORD,voice)
+        sleep(2)
 

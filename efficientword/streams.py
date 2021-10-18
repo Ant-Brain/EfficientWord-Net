@@ -10,10 +10,10 @@ AudioFrameFunction = Callable[[],np.array]
 
 class CustomAudioStream :
     """
-    CustomAudioStreamForEngine implementation allows developers to use 
-    alternative streams, instead of mic
+    CustomAudioStream implementation allows developers to use 
+    any 16000Hz sampled audio streams with inference engine
 
-    It tries to add sliding window to custom audio streams
+    It tries to add sliding window to audio streams
     """
     def __init__(
         self,
@@ -41,9 +41,9 @@ class CustomAudioStream :
         self._out_audio = np.zeros(RATE)
 
     def getFrame(self):
-        f"""
+        """
         Returns a 1 sec audio frame with sliding window of 1/8 sec with 
-        sampling frequency {RATE}Hz
+        sampling frequency 16000Hz
         """
 
         new_frame = self._get_next_frame()
@@ -60,7 +60,8 @@ class CustomAudioStream :
 class SimpleMicStream(CustomAudioStream) :
 
     """
-    Implements mic stream with sliding window
+    Implements mic stream with sliding window, 
+    implemented by inheriting CustomAudioStream
     """
     def __init__(self,sliding_window_secs:float=1/8):
         p=pyaudio.PyAudio()

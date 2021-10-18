@@ -1,3 +1,8 @@
+"""
+Can be run directly in cli 
+`python -m efficientword.generate_reference`
+"""
+
 import glob
 import librosa
 import tflite_runtime.interpreter as tflite
@@ -70,9 +75,13 @@ def audioToVector(inpAudio:np.array) -> np.array :
     """
     Converts 16000Hz sampled 1 sec of audio to vector embedding
     Inp Parameters :
+
         inpAudio  : np.array of shape (16000,)
+
     Out Parameters :
+
         1 vector embedding of shape (128,1)
+
     """
     assert(inpAudio.shape==(16000,))
 
@@ -105,6 +114,7 @@ def generate_reference_file(input_dir:str,output_dir:str,wakeword:str,debug:bool
         the samples
 
     Out Parameters:
+
         None
 
     """

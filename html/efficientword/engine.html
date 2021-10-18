@@ -1,0 +1,1067 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>efficientword.engine API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>efficientword.engine</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import json
+from os.path import isfile , join
+import numpy as np
+import pyaudio
+
+from typing import Tuple , List
+
+from efficientword.generate_reference import audioToVector
+from efficientword import RATE
+
+class HotwordDetector :
+
+    &#34;&#34;&#34;
+    EfficientWord based HotwordDetector Engine implementation class
+    &#34;&#34;&#34;
+
+    def __init__(self,hotword:str,reference_file:str,threshold:float=0.85):
+        &#34;&#34;&#34;
+        Intializes hotword detector instance
+
+        Inp Parameters:
+
+            hotword : hotword in a string
+
+            reference_file : path of reference file for a hotword generated 
+            with efficientword.generate_reference module
+
+            threshold: float value between 0 and 1 , min similarity score
+            required for a match
+
+        &#34;&#34;&#34;
+        assert isfile(reference_file), \
+            &#34;Reference File Path Invalid&#34;
+
+        assert threshold&gt;0 and threshold&lt;1, \
+            &#34;Threshold can be only between 0 and 1&#34;
+
+        data = json.loads(open(reference_file,&#39;r&#39;).read())
+        self.embeddings = np.array(data[&#34;embeddings&#34;]).astype(np.float32)
+
+        assert self.embeddings.shape[0]&gt;4, \
+            &#34;Minimum of 4 sample datapoints is required&#34;
+
+        self.hotword = hotword
+        self.threshold = threshold
+
+    def __repr__(self):
+        return f&#34;Hotword: {self.hotword}&#34;
+
+    def getMatchScoreVector(self,inp_vec:np.array) -&gt; float :
+        &#34;&#34;&#34;
+        **Use this directly only if u know what you are doing**
+
+        Returns the match score from 0 to 1 for an embedding with
+        given reference file
+        &#34;&#34;&#34;
+
+        assert inp_vec.shape == (1,128), \
+            &#34;Inp vector should be of shape (1,128)&#34;
+
+        distances = np.sqrt(
+            np.sum(
+                (inp_vec - self.embeddings)**2,
+                axis=1
+            )
+        )
+
+        distances[distances&gt;0.3] = 0.3
+        top3 = (0.3-np.sort(distances)[:3])/0.3
+        out = 0.0
+        for i in top3 :
+            out+= (1-out) * i
+
+        return out
+
+
+    def checkVector(self,inp_vec:np.array) -&gt; bool:
+        &#34;&#34;&#34;
+        **Use this directly only if u know what you are doing**
+
+        Checks if given a given embedding matches with
+        given reference file
+        &#34;&#34;&#34;
+
+        assert inp_vec.shape == (1,128), \
+            &#34;Inp vector should be of shape (1,128)&#34;
+
+        return self.getMatchScoreVector(inp_vec) &gt; self.threshold
+
+    def getMatchScoreFrame(
+            self,
+            inp_audio_frame:np.array,
+            unsafe:bool = False) -&gt; float :
+        &#34;&#34;&#34;
+        Converts given audio frame to embedding and checks for similarity
+        with given reference file
+
+        Inp Parameters:
+
+            inp_audio_frame : np.array of 1channel 1 sec 16000Hz sampled audio 
+            frame
+            unsafe : bool value, set to False by default to prevent engine
+            processing continuous speech , to minimalize false positives
+
+        **Note : change unsafe to True only if you know what you are doing**
+
+        Out Parameters:
+
+            float , ranges btw 0 to 1 . Higher value denoting higher match
+
+        &#34;&#34;&#34;
+
+        if(not unsafe):
+            upperPoint = max(
+                (
+                    inp_audio_frame/inp_audio_frame.max()
+                )[:RATE//10]
+            )
+            if(upperPoint &gt; 0.2):
+                return False
+
+        assert inp_audio_frame.shape == (RATE,), \
+            f&#34;Audio frame needs to be a 1 sec {RATE}Hz sampled vector&#34;
+
+        return self.getMatchScoreVector(
+            audioToVector(
+                inp_audio_frame
+            )
+        )
+
+
+    def checkFrame(self,inp_audio_frame:np.array,unsafe:bool = False) -&gt; bool :
+        &#34;&#34;&#34;
+        Converts given audio frame to embedding and checks for similarity
+        with given reference file
+
+        Inp Parameters:
+
+            inp_audio_frame : np.array of 1channel 1 sec 16000Hz sampled audio 
+            frame
+            unsafe : bool value, set to False by default to prevent engine
+            processing continuous speech , to minimalize false positives
+
+        **Note : change unsafe to True only if you know what you are doing**
+
+        Out Parameters:
+
+            bool , conveys if given frame has a likely match of the hotword
+
+        &#34;&#34;&#34;
+
+        assert inp_audio_frame.shape == (RATE,), \
+            f&#34;Audio frame needs to be a 1 sec {RATE}Hz sampled vector&#34;
+
+        if(not unsafe):
+            upperPoint = max(
+                (
+                    inp_audio_frame/inp_audio_frame.max()
+                )[:RATE//10]
+            )
+            if(upperPoint &gt; 0.2):
+                return False
+
+        return self.getMatchScoreFrame(inp_audio_frame) &gt; self.threshold
+
+HotwordDetectorArray = List[HotwordDetector]
+MatchInfo = Tuple[HotwordDetector,float]
+MatchInfoArray = List[MatchInfo]
+
+class MultiHotwordDetector :
+    &#34;&#34;&#34;
+    Wrapper over HotwordDetector to check for presence of one out of
+    multiple hotwords efficiently
+    &#34;&#34;&#34;
+
+    def __init__(
+        self,
+        detector_collection:HotwordDetectorArray,
+    ):
+        &#34;&#34;&#34;
+        Inp Parameters:
+
+            detector_collection : List/Tuple of HotwordDetector instances
+        &#34;&#34;&#34;
+        assert len(detector_collection)&gt;1, \
+            &#34;Pass atleast 2 HotwordDetector instances&#34;
+
+        for detector in detector_collection :
+            assert isinstance(detector,HotwordDetector), \
+                &#34;Mixed Array received, send HotwordDetector only array&#34;
+
+        self.detector_collection = detector_collection
+
+    def findBestMatch(
+            self,
+            inp_audio_frame:np.array,
+            unsafe:bool=False
+            ) -&gt; MatchInfo :
+        &#34;&#34;&#34;
+        Returns the best match hotword for a given audio frame
+        within respective thresholds , returns None if found none
+
+        Inp Parameters:
+
+            inp_audio_frame : 1 sec 16000Hz frq sampled audio frame 
+
+            unsafe : bool value, set to False by default to prevent engine
+            processing continuous speech , to minimalize false positives
+
+        **Note : change unsafe to True only if you know what you are doing**
+
+        Out Parameters:
+
+            (detector,score) : returns detector of best matched hotword ,
+            with its score
+
+        &#34;&#34;&#34;
+        assert inp_audio_frame.shape == (RATE,), \
+            f&#34;Audio frame needs to be a 1 sec {RATE}Hz sampled vector&#34;
+
+        if(not unsafe):
+            upperPoint = max(
+                (
+                    inp_audio_frame/inp_audio_frame.max()
+                )[:1600]
+            )
+            if(upperPoint &gt; 0.2):
+                return None , None
+
+        embedding = audioToVector(inp_audio_frame)
+
+        best_match_detector:str = None
+        best_match_score:float = 0.0
+
+        for detector in self.detector_collection :
+            score = detector.getMatchScoreVector(embedding)
+            if(score&lt;detector.threshold):
+                continue
+            if(score&gt;best_match_score):
+                best_match_score = score
+                best_match_detector = detector
+
+        return (best_match_detector,best_match_score)
+
+    def findAllMatches(
+            self,
+            inp_audio_frame:np.array,
+            unsafe:bool=False
+            ) -&gt; MatchInfoArray :
+        &#34;&#34;&#34;
+        Returns the best match hotword for a given audio frame
+        within respective thresholds , returns None if found none
+
+        Inp Parameters:
+
+            inp_audio_frame : 1 sec 16000Hz frq sampled audio frame
+
+            unsafe : bool value, set to False by default to prevent engine
+            processing continuous speech , to minimalize false positives
+
+        Note : change unsafe to True only if you know what you are doing
+
+        Out Parameters:
+
+            [ (detector,score) ,... ] : returns list of matched detectors 
+            with respective scores
+
+        &#34;&#34;&#34;
+        assert inp_audio_frame.shape == (RATE,), \
+            f&#34;Audio frame needs to be a 1 sec {RATE}Hz sampled vector&#34;
+
+
+        if(not unsafe):
+            upperPoint = max(
+                (
+                    inp_audio_frame/inp_audio_frame.max()
+                )[:1600]
+            )
+            if(upperPoint &gt; 0.2 or upperPoint==0):
+                return None , None
+
+        embedding = audioToVector(inp_audio_frame)
+
+        matches:MatchInfoArray = []
+        
+        best_match_score = 0.0
+        for detector in self.detector_collection :
+            score = detector.getMatchScoreVector(embedding)
+            if(score&lt;detector.threshold):
+                continue
+            if(score&gt;best_match_score):
+                best_match_score = score
+                matches.append(
+                        (detector,best_match_score)
+                        )
+
+        return matches
+
+if __name__ == &#34;__main__&#34; :
+    import os
+    from efficientword.streams import SimpleMicStream
+    from efficientword import samples_loc
+    print(samples_loc)
+    alexa_hw = HotwordDetector(
+            hotword=&#34;Alexa&#34;,
+            reference_file = os.path.join(samples_loc,&#34;alexa_ref.json&#34;),
+        )
+
+    siri_hw = HotwordDetector(
+            hotword=&#34;Siri&#34;,
+            reference_file = os.path.join(samples_loc,&#34;siri_ref.json&#34;)
+            )
+
+    google_hw = HotwordDetector(
+            hotword=&#34;Google&#34;,
+            reference_file = os.path.join(samples_loc,&#34;google_ref.json&#34;)
+            )
+
+    multi_hw_engine = MultiHotwordDetector(
+            detector_collection = [alexa_hw,siri_hw,google_hw]
+            )
+
+    mic_stream = SimpleMicStream()
+    mic_stream.start_stream()
+
+    print(&#34;Say Google / Alexa / Siri&#34;)
+    while True :
+        frame = mic_stream.getFrame()
+        result = multi_hw_engine.findBestMatch(frame)
+        if(None not in result):
+            print(result[0],f&#34;,Confidence {result[1]:0.4f}&#34;)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="efficientword.engine.HotwordDetector"><code class="flex name class">
+<span>class <span class="ident">HotwordDetector</span></span>
+<span>(</span><span>hotword: str, reference_file: str, threshold: float = 0.85)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>EfficientWord based HotwordDetector Engine implementation class</p>
+<p>Intializes hotword detector instance</p>
+<p>Inp Parameters:</p>
+<pre><code>hotword : hotword in a string
+
+reference_file : path of reference file for a hotword generated 
+with efficientword.generate_reference module
+
+threshold: float value between 0 and 1 , min similarity score
+required for a match
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class HotwordDetector :
+
+    &#34;&#34;&#34;
+    EfficientWord based HotwordDetector Engine implementation class
+    &#34;&#34;&#34;
+
+    def __init__(self,hotword:str,reference_file:str,threshold:float=0.85):
+        &#34;&#34;&#34;
+        Intializes hotword detector instance
+
+        Inp Parameters:
+
+            hotword : hotword in a string
+
+            reference_file : path of reference file for a hotword generated 
+            with efficientword.generate_reference module
+
+            threshold: float value between 0 and 1 , min similarity score
+            required for a match
+
+        &#34;&#34;&#34;
+        assert isfile(reference_file), \
+            &#34;Reference File Path Invalid&#34;
+
+        assert threshold&gt;0 and threshold&lt;1, \
+            &#34;Threshold can be only between 0 and 1&#34;
+
+        data = json.loads(open(reference_file,&#39;r&#39;).read())
+        self.embeddings = np.array(data[&#34;embeddings&#34;]).astype(np.float32)
+
+        assert self.embeddings.shape[0]&gt;4, \
+            &#34;Minimum of 4 sample datapoints is required&#34;
+
+        self.hotword = hotword
+        self.threshold = threshold
+
+    def __repr__(self):
+        return f&#34;Hotword: {self.hotword}&#34;
+
+    def getMatchScoreVector(self,inp_vec:np.array) -&gt; float :
+        &#34;&#34;&#34;
+        **Use this directly only if u know what you are doing**
+
+        Returns the match score from 0 to 1 for an embedding with
+        given reference file
+        &#34;&#34;&#34;
+
+        assert inp_vec.shape == (1,128), \
+            &#34;Inp vector should be of shape (1,128)&#34;
+
+        distances = np.sqrt(
+            np.sum(
+                (inp_vec - self.embeddings)**2,
+                axis=1
+            )
+        )
+
+        distances[distances&gt;0.3] = 0.3
+        top3 = (0.3-np.sort(distances)[:3])/0.3
+        out = 0.0
+        for i in top3 :
+            out+= (1-out) * i
+
+        return out
+
+
+    def checkVector(self,inp_vec:np.array) -&gt; bool:
+        &#34;&#34;&#34;
+        **Use this directly only if u know what you are doing**
+
+        Checks if given a given embedding matches with
+        given reference file
+        &#34;&#34;&#34;
+
+        assert inp_vec.shape == (1,128), \
+            &#34;Inp vector should be of shape (1,128)&#34;
+
+        return self.getMatchScoreVector(inp_vec) &gt; self.threshold
+
+    def getMatchScoreFrame(
+            self,
+            inp_audio_frame:np.array,
+            unsafe:bool = False) -&gt; float :
+        &#34;&#34;&#34;
+        Converts given audio frame to embedding and checks for similarity
+        with given reference file
+
+        Inp Parameters:
+
+            inp_audio_frame : np.array of 1channel 1 sec 16000Hz sampled audio 
+            frame
+            unsafe : bool value, set to False by default to prevent engine
+            processing continuous speech , to minimalize false positives
+
+        **Note : change unsafe to True only if you know what you are doing**
+
+        Out Parameters:
+
+            float , ranges btw 0 to 1 . Higher value denoting higher match
+
+        &#34;&#34;&#34;
+
+        if(not unsafe):
+            upperPoint = max(
+                (
+                    inp_audio_frame/inp_audio_frame.max()
+                )[:RATE//10]
+            )
+            if(upperPoint &gt; 0.2):
+                return False
+
+        assert inp_audio_frame.shape == (RATE,), \
+            f&#34;Audio frame needs to be a 1 sec {RATE}Hz sampled vector&#34;
+
+        return self.getMatchScoreVector(
+            audioToVector(
+                inp_audio_frame
+            )
+        )
+
+
+    def checkFrame(self,inp_audio_frame:np.array,unsafe:bool = False) -&gt; bool :
+        &#34;&#34;&#34;
+        Converts given audio frame to embedding and checks for similarity
+        with given reference file
+
+        Inp Parameters:
+
+            inp_audio_frame : np.array of 1channel 1 sec 16000Hz sampled audio 
+            frame
+            unsafe : bool value, set to False by default to prevent engine
+            processing continuous speech , to minimalize false positives
+
+        **Note : change unsafe to True only if you know what you are doing**
+
+        Out Parameters:
+
+            bool , conveys if given frame has a likely match of the hotword
+
+        &#34;&#34;&#34;
+
+        assert inp_audio_frame.shape == (RATE,), \
+            f&#34;Audio frame needs to be a 1 sec {RATE}Hz sampled vector&#34;
+
+        if(not unsafe):
+            upperPoint = max(
+                (
+                    inp_audio_frame/inp_audio_frame.max()
+                )[:RATE//10]
+            )
+            if(upperPoint &gt; 0.2):
+                return False
+
+        return self.getMatchScoreFrame(inp_audio_frame) &gt; self.threshold</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="efficientword.engine.HotwordDetector.checkFrame"><code class="name flex">
+<span>def <span class="ident">checkFrame</span></span>(<span>self, inp_audio_frame: <built-in function array>, unsafe: bool = False) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Converts given audio frame to embedding and checks for similarity
+with given reference file</p>
+<p>Inp Parameters:</p>
+<pre><code>inp_audio_frame : np.array of 1channel 1 sec 16000Hz sampled audio 
+frame
+unsafe : bool value, set to False by default to prevent engine
+processing continuous speech , to minimalize false positives
+</code></pre>
+<p><strong>Note : change unsafe to True only if you know what you are doing</strong></p>
+<p>Out Parameters:</p>
+<pre><code>bool , conveys if given frame has a likely match of the hotword
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def checkFrame(self,inp_audio_frame:np.array,unsafe:bool = False) -&gt; bool :
+    &#34;&#34;&#34;
+    Converts given audio frame to embedding and checks for similarity
+    with given reference file
+
+    Inp Parameters:
+
+        inp_audio_frame : np.array of 1channel 1 sec 16000Hz sampled audio 
+        frame
+        unsafe : bool value, set to False by default to prevent engine
+        processing continuous speech , to minimalize false positives
+
+    **Note : change unsafe to True only if you know what you are doing**
+
+    Out Parameters:
+
+        bool , conveys if given frame has a likely match of the hotword
+
+    &#34;&#34;&#34;
+
+    assert inp_audio_frame.shape == (RATE,), \
+        f&#34;Audio frame needs to be a 1 sec {RATE}Hz sampled vector&#34;
+
+    if(not unsafe):
+        upperPoint = max(
+            (
+                inp_audio_frame/inp_audio_frame.max()
+            )[:RATE//10]
+        )
+        if(upperPoint &gt; 0.2):
+            return False
+
+    return self.getMatchScoreFrame(inp_audio_frame) &gt; self.threshold</code></pre>
+</details>
+</dd>
+<dt id="efficientword.engine.HotwordDetector.checkVector"><code class="name flex">
+<span>def <span class="ident">checkVector</span></span>(<span>self, inp_vec: <built-in function array>) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p><strong>Use this directly only if u know what you are doing</strong></p>
+<p>Checks if given a given embedding matches with
+given reference file</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def checkVector(self,inp_vec:np.array) -&gt; bool:
+    &#34;&#34;&#34;
+    **Use this directly only if u know what you are doing**
+
+    Checks if given a given embedding matches with
+    given reference file
+    &#34;&#34;&#34;
+
+    assert inp_vec.shape == (1,128), \
+        &#34;Inp vector should be of shape (1,128)&#34;
+
+    return self.getMatchScoreVector(inp_vec) &gt; self.threshold</code></pre>
+</details>
+</dd>
+<dt id="efficientword.engine.HotwordDetector.getMatchScoreFrame"><code class="name flex">
+<span>def <span class="ident">getMatchScoreFrame</span></span>(<span>self, inp_audio_frame: <built-in function array>, unsafe: bool = False) ‑> float</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Converts given audio frame to embedding and checks for similarity
+with given reference file</p>
+<p>Inp Parameters:</p>
+<pre><code>inp_audio_frame : np.array of 1channel 1 sec 16000Hz sampled audio 
+frame
+unsafe : bool value, set to False by default to prevent engine
+processing continuous speech , to minimalize false positives
+</code></pre>
+<p><strong>Note : change unsafe to True only if you know what you are doing</strong></p>
+<p>Out Parameters:</p>
+<pre><code>float , ranges btw 0 to 1 . Higher value denoting higher match
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getMatchScoreFrame(
+        self,
+        inp_audio_frame:np.array,
+        unsafe:bool = False) -&gt; float :
+    &#34;&#34;&#34;
+    Converts given audio frame to embedding and checks for similarity
+    with given reference file
+
+    Inp Parameters:
+
+        inp_audio_frame : np.array of 1channel 1 sec 16000Hz sampled audio 
+        frame
+        unsafe : bool value, set to False by default to prevent engine
+        processing continuous speech , to minimalize false positives
+
+    **Note : change unsafe to True only if you know what you are doing**
+
+    Out Parameters:
+
+        float , ranges btw 0 to 1 . Higher value denoting higher match
+
+    &#34;&#34;&#34;
+
+    if(not unsafe):
+        upperPoint = max(
+            (
+                inp_audio_frame/inp_audio_frame.max()
+            )[:RATE//10]
+        )
+        if(upperPoint &gt; 0.2):
+            return False
+
+    assert inp_audio_frame.shape == (RATE,), \
+        f&#34;Audio frame needs to be a 1 sec {RATE}Hz sampled vector&#34;
+
+    return self.getMatchScoreVector(
+        audioToVector(
+            inp_audio_frame
+        )
+    )</code></pre>
+</details>
+</dd>
+<dt id="efficientword.engine.HotwordDetector.getMatchScoreVector"><code class="name flex">
+<span>def <span class="ident">getMatchScoreVector</span></span>(<span>self, inp_vec: <built-in function array>) ‑> float</span>
+</code></dt>
+<dd>
+<div class="desc"><p><strong>Use this directly only if u know what you are doing</strong></p>
+<p>Returns the match score from 0 to 1 for an embedding with
+given reference file</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getMatchScoreVector(self,inp_vec:np.array) -&gt; float :
+    &#34;&#34;&#34;
+    **Use this directly only if u know what you are doing**
+
+    Returns the match score from 0 to 1 for an embedding with
+    given reference file
+    &#34;&#34;&#34;
+
+    assert inp_vec.shape == (1,128), \
+        &#34;Inp vector should be of shape (1,128)&#34;
+
+    distances = np.sqrt(
+        np.sum(
+            (inp_vec - self.embeddings)**2,
+            axis=1
+        )
+    )
+
+    distances[distances&gt;0.3] = 0.3
+    top3 = (0.3-np.sort(distances)[:3])/0.3
+    out = 0.0
+    for i in top3 :
+        out+= (1-out) * i
+
+    return out</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="efficientword.engine.MultiHotwordDetector"><code class="flex name class">
+<span>class <span class="ident">MultiHotwordDetector</span></span>
+<span>(</span><span>detector_collection: List[<a title="efficientword.engine.HotwordDetector" href="#efficientword.engine.HotwordDetector">HotwordDetector</a>])</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Wrapper over HotwordDetector to check for presence of one out of
+multiple hotwords efficiently</p>
+<p>Inp Parameters:</p>
+<pre><code>detector_collection : List/Tuple of HotwordDetector instances
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class MultiHotwordDetector :
+    &#34;&#34;&#34;
+    Wrapper over HotwordDetector to check for presence of one out of
+    multiple hotwords efficiently
+    &#34;&#34;&#34;
+
+    def __init__(
+        self,
+        detector_collection:HotwordDetectorArray,
+    ):
+        &#34;&#34;&#34;
+        Inp Parameters:
+
+            detector_collection : List/Tuple of HotwordDetector instances
+        &#34;&#34;&#34;
+        assert len(detector_collection)&gt;1, \
+            &#34;Pass atleast 2 HotwordDetector instances&#34;
+
+        for detector in detector_collection :
+            assert isinstance(detector,HotwordDetector), \
+                &#34;Mixed Array received, send HotwordDetector only array&#34;
+
+        self.detector_collection = detector_collection
+
+    def findBestMatch(
+            self,
+            inp_audio_frame:np.array,
+            unsafe:bool=False
+            ) -&gt; MatchInfo :
+        &#34;&#34;&#34;
+        Returns the best match hotword for a given audio frame
+        within respective thresholds , returns None if found none
+
+        Inp Parameters:
+
+            inp_audio_frame : 1 sec 16000Hz frq sampled audio frame 
+
+            unsafe : bool value, set to False by default to prevent engine
+            processing continuous speech , to minimalize false positives
+
+        **Note : change unsafe to True only if you know what you are doing**
+
+        Out Parameters:
+
+            (detector,score) : returns detector of best matched hotword ,
+            with its score
+
+        &#34;&#34;&#34;
+        assert inp_audio_frame.shape == (RATE,), \
+            f&#34;Audio frame needs to be a 1 sec {RATE}Hz sampled vector&#34;
+
+        if(not unsafe):
+            upperPoint = max(
+                (
+                    inp_audio_frame/inp_audio_frame.max()
+                )[:1600]
+            )
+            if(upperPoint &gt; 0.2):
+                return None , None
+
+        embedding = audioToVector(inp_audio_frame)
+
+        best_match_detector:str = None
+        best_match_score:float = 0.0
+
+        for detector in self.detector_collection :
+            score = detector.getMatchScoreVector(embedding)
+            if(score&lt;detector.threshold):
+                continue
+            if(score&gt;best_match_score):
+                best_match_score = score
+                best_match_detector = detector
+
+        return (best_match_detector,best_match_score)
+
+    def findAllMatches(
+            self,
+            inp_audio_frame:np.array,
+            unsafe:bool=False
+            ) -&gt; MatchInfoArray :
+        &#34;&#34;&#34;
+        Returns the best match hotword for a given audio frame
+        within respective thresholds , returns None if found none
+
+        Inp Parameters:
+
+            inp_audio_frame : 1 sec 16000Hz frq sampled audio frame
+
+            unsafe : bool value, set to False by default to prevent engine
+            processing continuous speech , to minimalize false positives
+
+        Note : change unsafe to True only if you know what you are doing
+
+        Out Parameters:
+
+            [ (detector,score) ,... ] : returns list of matched detectors 
+            with respective scores
+
+        &#34;&#34;&#34;
+        assert inp_audio_frame.shape == (RATE,), \
+            f&#34;Audio frame needs to be a 1 sec {RATE}Hz sampled vector&#34;
+
+
+        if(not unsafe):
+            upperPoint = max(
+                (
+                    inp_audio_frame/inp_audio_frame.max()
+                )[:1600]
+            )
+            if(upperPoint &gt; 0.2 or upperPoint==0):
+                return None , None
+
+        embedding = audioToVector(inp_audio_frame)
+
+        matches:MatchInfoArray = []
+        
+        best_match_score = 0.0
+        for detector in self.detector_collection :
+            score = detector.getMatchScoreVector(embedding)
+            if(score&lt;detector.threshold):
+                continue
+            if(score&gt;best_match_score):
+                best_match_score = score
+                matches.append(
+                        (detector,best_match_score)
+                        )
+
+        return matches</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="efficientword.engine.MultiHotwordDetector.findAllMatches"><code class="name flex">
+<span>def <span class="ident">findAllMatches</span></span>(<span>self, inp_audio_frame: <built-in function array>, unsafe: bool = False) ‑> List[Tuple[<a title="efficientword.engine.HotwordDetector" href="#efficientword.engine.HotwordDetector">HotwordDetector</a>, float]]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns the best match hotword for a given audio frame
+within respective thresholds , returns None if found none</p>
+<p>Inp Parameters:</p>
+<pre><code>inp_audio_frame : 1 sec 16000Hz frq sampled audio frame
+
+unsafe : bool value, set to False by default to prevent engine
+processing continuous speech , to minimalize false positives
+</code></pre>
+<p>Note : change unsafe to True only if you know what you are doing</p>
+<p>Out Parameters:</p>
+<pre><code>[ (detector,score) ,... ] : returns list of matched detectors 
+with respective scores
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def findAllMatches(
+        self,
+        inp_audio_frame:np.array,
+        unsafe:bool=False
+        ) -&gt; MatchInfoArray :
+    &#34;&#34;&#34;
+    Returns the best match hotword for a given audio frame
+    within respective thresholds , returns None if found none
+
+    Inp Parameters:
+
+        inp_audio_frame : 1 sec 16000Hz frq sampled audio frame
+
+        unsafe : bool value, set to False by default to prevent engine
+        processing continuous speech , to minimalize false positives
+
+    Note : change unsafe to True only if you know what you are doing
+
+    Out Parameters:
+
+        [ (detector,score) ,... ] : returns list of matched detectors 
+        with respective scores
+
+    &#34;&#34;&#34;
+    assert inp_audio_frame.shape == (RATE,), \
+        f&#34;Audio frame needs to be a 1 sec {RATE}Hz sampled vector&#34;
+
+
+    if(not unsafe):
+        upperPoint = max(
+            (
+                inp_audio_frame/inp_audio_frame.max()
+            )[:1600]
+        )
+        if(upperPoint &gt; 0.2 or upperPoint==0):
+            return None , None
+
+    embedding = audioToVector(inp_audio_frame)
+
+    matches:MatchInfoArray = []
+    
+    best_match_score = 0.0
+    for detector in self.detector_collection :
+        score = detector.getMatchScoreVector(embedding)
+        if(score&lt;detector.threshold):
+            continue
+        if(score&gt;best_match_score):
+            best_match_score = score
+            matches.append(
+                    (detector,best_match_score)
+                    )
+
+    return matches</code></pre>
+</details>
+</dd>
+<dt id="efficientword.engine.MultiHotwordDetector.findBestMatch"><code class="name flex">
+<span>def <span class="ident">findBestMatch</span></span>(<span>self, inp_audio_frame: <built-in function array>, unsafe: bool = False) ‑> Tuple[<a title="efficientword.engine.HotwordDetector" href="#efficientword.engine.HotwordDetector">HotwordDetector</a>, float]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns the best match hotword for a given audio frame
+within respective thresholds , returns None if found none</p>
+<p>Inp Parameters:</p>
+<pre><code>inp_audio_frame : 1 sec 16000Hz frq sampled audio frame
+
+unsafe : bool value, set to False by default to prevent engine
+processing continuous speech , to minimalize false positives
+</code></pre>
+<p><strong>Note : change unsafe to True only if you know what you are doing</strong></p>
+<p>Out Parameters:</p>
+<pre><code>(detector,score) : returns detector of best matched hotword ,
+with its score
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def findBestMatch(
+        self,
+        inp_audio_frame:np.array,
+        unsafe:bool=False
+        ) -&gt; MatchInfo :
+    &#34;&#34;&#34;
+    Returns the best match hotword for a given audio frame
+    within respective thresholds , returns None if found none
+
+    Inp Parameters:
+
+        inp_audio_frame : 1 sec 16000Hz frq sampled audio frame 
+
+        unsafe : bool value, set to False by default to prevent engine
+        processing continuous speech , to minimalize false positives
+
+    **Note : change unsafe to True only if you know what you are doing**
+
+    Out Parameters:
+
+        (detector,score) : returns detector of best matched hotword ,
+        with its score
+
+    &#34;&#34;&#34;
+    assert inp_audio_frame.shape == (RATE,), \
+        f&#34;Audio frame needs to be a 1 sec {RATE}Hz sampled vector&#34;
+
+    if(not unsafe):
+        upperPoint = max(
+            (
+                inp_audio_frame/inp_audio_frame.max()
+            )[:1600]
+        )
+        if(upperPoint &gt; 0.2):
+            return None , None
+
+    embedding = audioToVector(inp_audio_frame)
+
+    best_match_detector:str = None
+    best_match_score:float = 0.0
+
+    for detector in self.detector_collection :
+        score = detector.getMatchScoreVector(embedding)
+        if(score&lt;detector.threshold):
+            continue
+        if(score&gt;best_match_score):
+            best_match_score = score
+            best_match_detector = detector
+
+    return (best_match_detector,best_match_score)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="efficientword" href="index.html">efficientword</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="efficientword.engine.HotwordDetector" href="#efficientword.engine.HotwordDetector">HotwordDetector</a></code></h4>
+<ul class="">
+<li><code><a title="efficientword.engine.HotwordDetector.checkFrame" href="#efficientword.engine.HotwordDetector.checkFrame">checkFrame</a></code></li>
+<li><code><a title="efficientword.engine.HotwordDetector.checkVector" href="#efficientword.engine.HotwordDetector.checkVector">checkVector</a></code></li>
+<li><code><a title="efficientword.engine.HotwordDetector.getMatchScoreFrame" href="#efficientword.engine.HotwordDetector.getMatchScoreFrame">getMatchScoreFrame</a></code></li>
+<li><code><a title="efficientword.engine.HotwordDetector.getMatchScoreVector" href="#efficientword.engine.HotwordDetector.getMatchScoreVector">getMatchScoreVector</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="efficientword.engine.MultiHotwordDetector" href="#efficientword.engine.MultiHotwordDetector">MultiHotwordDetector</a></code></h4>
+<ul class="">
+<li><code><a title="efficientword.engine.MultiHotwordDetector.findAllMatches" href="#efficientword.engine.MultiHotwordDetector.findAllMatches">findAllMatches</a></code></li>
+<li><code><a title="efficientword.engine.MultiHotwordDetector.findBestMatch" href="#efficientword.engine.MultiHotwordDetector.findBestMatch">findBestMatch</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

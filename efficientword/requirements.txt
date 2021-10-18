@@ -1,0 +1,7 @@
+librosa==0.8.1
+numba==0.54.1
+numpy==1.20.0
+PyAudio==0.2.11
+requests==2.26.0
+tflite-runtime<=2.5
+--extra-index-url https://google-coral.github.io/py-repo/
