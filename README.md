@@ -20,7 +20,7 @@ The paper is currently under review, once published all the preprint and the tra
 ## Python Version Requirements
 
 This Library works between python versions:
-    3.6 to 
+    3.6 to 3.9
 <br>
 
 ## Dependencies Installation
