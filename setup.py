@@ -1,0 +1,24 @@
+from setuptools import setup
+from glob import glob
+
+setup(
+    name = 'efficientword',
+    version = '0.0.1',
+    description = 'Few Shot Learning based Hotword Detection Engine',
+    long_description = open("./README.md",'r').read(),
+    long_description_content_type = 'text/markdown',
+    url = 'https://github.com/Ant-Brain/EfficientWord',
+    #py_modules = ['efficientword'],
+    packages = ['efficientword'],
+    install_requires = open("./requirements.txt",'r').read().split("\n"),
+    classifiers = [
+        "Developement Status :: 4 - Beta"
+        "Operating System :: OS Independent",
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+    ],
+    include_package_data=True,
+)
+

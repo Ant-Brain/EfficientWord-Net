@@ -1,3 +1,5 @@
 efficientword/__pycache__
 .ipynb_checkpoints
 .venv37
+build
+efficientword.egg-info
