@@ -5,7 +5,7 @@ import pyaudio
 
 from typing import Tuple , List
 
-from efficientword.generate_reference import audioToVector
+from efficientword.audio_processing import audioToVector
 from efficientword import RATE
 
 class HotwordDetector :
