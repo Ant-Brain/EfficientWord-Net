@@ -5,8 +5,8 @@ import pyaudio
 
 from typing import Tuple , List
 
-from efficientword.audio_processing import audioToVector
-from efficientword import RATE
+from eff_word_net.audio_processing import audioToVector
+from eff_word_net import RATE
 
 class HotwordDetector :
 
@@ -298,8 +298,8 @@ class MultiHotwordDetector :
 
 if __name__ == "__main__" :
     import os
-    from efficientword.streams import SimpleMicStream
-    from efficientword import samples_loc
+    from eff_word_net.streams import SimpleMicStream
+    from eff_word_net import samples_loc
     print(samples_loc)
     alexa_hw = HotwordDetector(
             hotword="Alexa",

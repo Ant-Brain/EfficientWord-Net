@@ -1,2 +1,2 @@
-recursive-include efficientword *.tflite
-recursive-include efficientword sample_refs *.json
+recursive-include eff_word_net *.tflite
+recursive-include eff_word_net sample_refs *.json

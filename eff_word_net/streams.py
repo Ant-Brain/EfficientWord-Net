@@ -1,8 +1,8 @@
 import pyaudio
 from typing import Tuple , Callable
 import numpy as np
-from efficientword.engine import HotwordDetector
-from efficientword import RATE
+from eff_word_net.engine import HotwordDetector
+from eff_word_net import RATE
 
 NoParameterFunction = Callable[[],None]
 AudioFrameFunction = Callable[[],np.array]

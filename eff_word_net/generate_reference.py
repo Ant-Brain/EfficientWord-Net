@@ -2,9 +2,16 @@
 Can be run directly in cli 
 `python -m efficientword.generate_reference`
 """
-from efficientword.audio_processing import audioToVector, fixPaddingIssues
+from eff_word_net.audio_processing import audioToVector, fixPaddingIssues
 import os , glob
+import numpy as np
+import json
+from eff_word_net.package_installation_scripts import check_install_librosa
+
+check_install_librosa()
+
 import librosa
+
 
 def generate_reference_file(input_dir:str,output_dir:str,wakeword:str,debug:bool=False):
     """

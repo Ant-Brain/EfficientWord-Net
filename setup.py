@@ -2,14 +2,14 @@ from setuptools import setup
 from glob import glob
 
 setup(
-    name = 'efficientword',
+    name = 'EfficientWord-Net',
     version = '0.0.1',
     description = 'Few Shot Learning based Hotword Detection Engine',
     long_description = open("./README.md",'r').read(),
     long_description_content_type = 'text/markdown',
     url = 'https://github.com/Ant-Brain/EfficientWord',
     #py_modules = ['efficientword'],
-    packages = ['efficientword'],
+    packages = ['eff_word_net'],
     install_requires = open("./requirements.txt",'r').read().split("\n"),
     classifiers = [
         "Developement Status :: 4 - Beta"

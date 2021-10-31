@@ -9,11 +9,14 @@ Uses ibm's demo of cloud neural voice , hence try to use it as low as possible
 import requests
 import json
 import shutil
-from os.path import isdir
+from os.path import isdir, join
 from os import mkdir
 from time import sleep
 
-def _getSoundFile(word:str,voice:str):
+def _getSoundFile(word:str,voice:str,out_dir:str):
+    assert isdir(out_dir) , "Not a valid output directory"
+
+    out_dir = join(out_dir,word.replace(" ","_"))
     session = requests.Session()
 
     data = {
@@ -33,9 +36,9 @@ def _getSoundFile(word:str,voice:str):
         f"https://www.ibm.com/demos/live/tts-demo/api/tts/newSynthesize?id={token}&voice={voice}",stream = True)
     if(audio_response.status_code==200):
         audio_response.raw.decode_content = True
-        if(not isdir(word)):
-            mkdir(word)
-        with open(f"{word}/{word}_{voice}.mp3",'wb') as f:
+        if(not isdir(out_dir)):
+            mkdir(out_dir)
+        with open(join(out_dir,f"{word}_{voice}.mp3"),'wb') as f:
             shutil.copyfileobj(audio_response.raw,f)
         return True
     return False
@@ -45,8 +48,8 @@ UK_VOICES = ["en-GB_CharlotteV3Voice","en-GB_KateV3Voice","en-GB_JamesV3Voice"]
 
 if __name__=="__main__":
     WORD = str(input("Enter your wakeword:"))
+    PATH = str(input("Enter location where audio files will be saved:"))
     for voice in [*USA_VOICES,*UK_VOICES]:
         print(voice)
-        _getSoundFile(WORD,voice)
+        _getSoundFile(WORD,voice,PATH)
         sleep(2)
-
