@@ -1,12 +1,12 @@
-# EfficientWord
+# EfficientWord-Net
 ![Versions : 3.6 ,3.7,3.8,3.9](https://camo.githubusercontent.com/a7b5b417de938c1faf3602c7f48f26fde8761a977be85390fd6c0d191e210ba8/68747470733a2f2f696d672e736869656c64732e696f2f707970692f707976657273696f6e732f74656e736f72666c6f772e7376673f7374796c653d706c6173746963)
 
 ## Hotword detection based on one-shot learning
 
-EfficientWord is an hotword detection engine based on one-shot
+EfficientWord-Net is an hotword detection engine based on one-shot
 learning inspired from FaceNet's Siamese Network Architecture.
 
-This repository is an official implemenation of EfficientNet as
+This repository is an official implemenation of EfficientWord-Net as
 a python library from the authors.
 
 The library is purely written with python and uses Google's Tflite
@@ -29,7 +29,11 @@ Before running the pip installation command for the library, few dependencies ne
 * [PyAudio (depends on PortAudio)](https://abhgog.gitbooks.io/pyaudio-manual/content/installation.html)
 * [Tflite (tensorflow lightweight binaries)](https://www.tensorflow.org/lite/guide/python#install_tensorflow_lite_for_python)
 * [Librosa (Binaries might not be available for certain systems)](https://github.com/librosa/librosa)
-Mac OS M* users might have to compile these dependecies
+Mac OS M* and Raspberry Pi users might have to compile these dependecies
+
+***tflite*** package cannot be listed in requirements.txt hence will be automatically installed when the package is initialized in the system
+
+***librosa*** package is not required for inference only cases , however when generate_reference is called , will be automatically installed
 
 <br>
 
@@ -37,13 +41,13 @@ Mac OS M* users might have to compile these dependecies
 Run the following pip command
 
 ```
-pip install efficientword
+pip install EfficientWord-Net
 ```
 
 and to import running
 
 ```
-import efficientword
+import eff_word_net
 ```
 <br>
 
@@ -53,7 +57,7 @@ script inbuilt with library (ensure you have a working mic)
 
 Command to run demo
 ```
-python -m efficientword.engine
+python -m eff_word_net.engine
 ```
 <br>
 
@@ -72,7 +76,7 @@ anything else.
 Finally run this command, it will ask for the input folder's location 
 (containing the audio files) and the output folder (where _ref.json file will be stored).
 ```
-python -m efficientword.generate_reference
+python -m eff_word_net.generate_reference
 ```
 
 The pathname of the generated wakeword needs to passed to the HotwordDetector detector instance.
@@ -87,7 +91,7 @@ HotwordDetector(
 Few wakewords such as **Google**, **Firefox**, **Alexa**, **Mobile**, **Siri** the library has predefined embeddings readily available in the library installation directory, its path is readily available in the following variable
 
 ```python
-from efficientword import samples_loc
+from eff_word_net import samples_loc
 ```
 
 <br>
@@ -97,9 +101,9 @@ from efficientword import samples_loc
 
 ```python
 import os
-from efficientword.streams import SimpleMicStream
-from efficientword.engine import HotwordDetector
-from efficientword import samples_loc
+from eff_word_net.streams import SimpleMicStream
+from eff_word_net.engine import HotwordDetector
+from eff_word_net import samples_loc
 
 alexa_hw = HotwordDetector(
         hotword="Alexa",
@@ -128,8 +132,8 @@ of running `checkFrame()` of each wakeword individually
 
 ```python
 import os
-from efficientword.streams import SimpleMicStream
-from efficientword import samples_loc
+from eff_word_net.streams import SimpleMicStream
+from eff_word_net import samples_loc
 
 alexa_hw = HotwordDetector(
         hotword="Alexa",

@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>efficientword API documentation</title>
-<meta name="description" content="EfficientWord
+<title>eff_word_net API documentation</title>
+<meta name="description" content="EfficientWord-Net
 ![Versions : 3.6 …" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -20,15 +20,15 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Package <code>efficientword</code></h1>
+<h1 class="title">Package <code>eff_word_net</code></h1>
 </header>
 <section id="section-intro">
-<h1 id="efficientword">EfficientWord</h1>
+<h1 id="efficientword-net">EfficientWord-Net</h1>
 <p><img alt="Versions : 3.6 ,3.7,3.8,3.9" src="https://camo.githubusercontent.com/a7b5b417de938c1faf3602c7f48f26fde8761a977be85390fd6c0d191e210ba8/68747470733a2f2f696d672e736869656c64732e696f2f707970692f707976657273696f6e732f74656e736f72666c6f772e7376673f7374796c653d706c6173746963"></p>
 <h2 id="hotword-detection-based-on-one-shot-learning">Hotword detection based on one-shot learning</h2>
-<p>EfficientWord is an hotword detection engine based on one-shot
+<p>EfficientWord-Net is an hotword detection engine based on one-shot
 learning inspired from FaceNet's Siamese Network Architecture.</p>
-<p>This repository is an official implemenation of EfficientNet as
+<p>This repository is an official implemenation of EfficientWord-Net as
 a python library from the authors.</p>
 <p>The library is purely written with python and uses Google's Tflite
 implemenation for faster realtime inference.</p>
@@ -45,22 +45,24 @@ implemenation for faster realtime inference.</p>
 <li><a href="https://abhgog.gitbooks.io/pyaudio-manual/content/installation.html">PyAudio (depends on PortAudio)</a></li>
 <li><a href="https://www.tensorflow.org/lite/guide/python#install_tensorflow_lite_for_python">Tflite (tensorflow lightweight binaries)</a></li>
 <li><a href="https://github.com/librosa/librosa">Librosa (Binaries might not be available for certain systems)</a>
-Mac OS M* users might have to compile these dependecies</li>
+Mac OS M* and Raspberry Pi users might have to compile these dependecies</li>
 </ul>
+<p><strong><em>tflite</em></strong> package cannot be listed in requirements.txt hence will be automatically installed when the package is initialized in the system</p>
+<p><strong><em>librosa</em></strong> package is not required for inference only cases , however when generate_reference is called , will be automatically installed</p>
 <p><br></p>
 <h2 id="package-installation">Package Installation</h2>
 <p>Run the following pip command</p>
-<pre><code>pip install efficientword
+<pre><code>pip install EfficientWord-Net
 </code></pre>
 <p>and to import running</p>
-<pre><code>import efficientword
+<pre><code>import eff_word_net
 </code></pre>
 <p><br></p>
 <h2 id="demo">Demo</h2>
 <p>After installing the packages, you can run the Demo
 script inbuilt with library (ensure you have a working mic)</p>
 <p>Command to run demo</p>
-<pre><code>python -m efficientword.engine
+<pre><code>python -m eff_word_net.engine
 </code></pre>
 <p><br></p>
 <h2 id="generating-custom-wakewords">Generating Custom Wakewords</h2>
@@ -73,7 +75,7 @@ of a given wakeword. Then put them into a seperate folder, which doesnt contain
 anything else.</p>
 <p>Finally run this command, it will ask for the input folder's location
 (containing the audio files) and the output folder (where _ref.json file will be stored).</p>
-<pre><code>python -m efficientword.generate_reference
+<pre><code>python -m eff_word_net.generate_reference
 </code></pre>
 <p>The pathname of the generated wakeword needs to passed to the HotwordDetector detector instance.</p>
 <pre><code class="language-python">HotwordDetector(
@@ -82,14 +84,14 @@ anything else.</p>
 )
 </code></pre>
 <p>Few wakewords such as <strong>Google</strong>, <strong>Firefox</strong>, <strong>Alexa</strong>, <strong>Mobile</strong>, <strong>Siri</strong> the library has predefined embeddings readily available in the library installation directory, its path is readily available in the following variable</p>
-<pre><code class="language-python">from efficientword import samples_loc
+<pre><code class="language-python">from eff_word_net import samples_loc
 </code></pre>
 <p><br></p>
 <h2 id="try-your-first-single-hotword-detection-script">Try your first single hotword detection script</h2>
 <pre><code class="language-python">import os
-from efficientword.streams import SimpleMicStream
-from efficientword.engine import HotwordDetector
-from efficientword import samples_loc
+from eff_word_net.streams import SimpleMicStream
+from eff_word_net.engine import HotwordDetector
+from eff_word_net import samples_loc
 
 alexa_hw = HotwordDetector(
         hotword=&quot;Alexa&quot;,
@@ -113,8 +115,8 @@ while True :
 to detect multiple hotwords from a given stream, installed
 of running <code>checkFrame()</code> of each wakeword individually</p>
 <pre><code class="language-python">import os
-from efficientword.streams import SimpleMicStream
-from efficientword import samples_loc
+from eff_word_net.streams import SimpleMicStream
+from eff_word_net import samples_loc
 
 alexa_hw = HotwordDetector(
         hotword=&quot;Alexa&quot;,
@@ -161,27 +163,39 @@ while True :
 
 import os
 RATE=16000
-samples_loc = os.path.join(os.path.dirname(os.path.realpath(__file__)),&#34;sample_refs&#34;)</code></pre>
+samples_loc = os.path.join(os.path.dirname(os.path.realpath(__file__)),&#34;sample_refs&#34;)
+
+from eff_word_net.package_installation_scripts import check_install_tflite
+
+check_install_tflite()</code></pre>
 </details>
 </section>
 <section>
 <h2 class="section-title" id="header-submodules">Sub-modules</h2>
 <dl>
-<dt><code class="name"><a title="efficientword.engine" href="engine.html">efficientword.engine</a></code></dt>
+<dt><code class="name"><a title="eff_word_net.audio_processing" href="audio_processing.html">eff_word_net.audio_processing</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt><code class="name"><a title="efficientword.generate_reference" href="generate_reference.html">efficientword.generate_reference</a></code></dt>
+<dt><code class="name"><a title="eff_word_net.engine" href="engine.html">eff_word_net.engine</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="eff_word_net.generate_reference" href="generate_reference.html">eff_word_net.generate_reference</a></code></dt>
 <dd>
 <div class="desc"><p>Can be run directly in cli
 <code>python -m efficientword.generate_reference</code></p></div>
 </dd>
-<dt><code class="name"><a title="efficientword.ibm_generate" href="ibm_generate.html">efficientword.ibm_generate</a></code></dt>
+<dt><code class="name"><a title="eff_word_net.ibm_generate" href="ibm_generate.html">eff_word_net.ibm_generate</a></code></dt>
 <dd>
 <div class="desc"><p>Needs to be run directly in cli via
 <code>python -m efficientword.ibm_generate</code> …</p></div>
 </dd>
-<dt><code class="name"><a title="efficientword.streams" href="streams.html">efficientword.streams</a></code></dt>
+<dt><code class="name"><a title="eff_word_net.package_installation_scripts" href="package_installation_scripts.html">eff_word_net.package_installation_scripts</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="eff_word_net.streams" href="streams.html">eff_word_net.streams</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -198,7 +212,7 @@ samples_loc = os.path.join(os.path.dirname(os.path.realpath(__file__)),&#34;samp
 <h1>Index</h1>
 <div class="toc">
 <ul>
-<li><a href="#efficientword">EfficientWord</a><ul>
+<li><a href="#efficientword-net">EfficientWord-Net</a><ul>
 <li><a href="#hotword-detection-based-on-one-shot-learning">Hotword detection based on one-shot learning</a></li>
 <li><a href="#access-preprint">Access preprint</a></li>
 <li><a href="#python-version-requirements">Python Version Requirements</a></li>
@@ -216,10 +230,12 @@ samples_loc = os.path.join(os.path.dirname(os.path.realpath(__file__)),&#34;samp
 <ul id="index">
 <li><h3><a href="#header-submodules">Sub-modules</a></h3>
 <ul>
-<li><code><a title="efficientword.engine" href="engine.html">efficientword.engine</a></code></li>
-<li><code><a title="efficientword.generate_reference" href="generate_reference.html">efficientword.generate_reference</a></code></li>
-<li><code><a title="efficientword.ibm_generate" href="ibm_generate.html">efficientword.ibm_generate</a></code></li>
-<li><code><a title="efficientword.streams" href="streams.html">efficientword.streams</a></code></li>
+<li><code><a title="eff_word_net.audio_processing" href="audio_processing.html">eff_word_net.audio_processing</a></code></li>
+<li><code><a title="eff_word_net.engine" href="engine.html">eff_word_net.engine</a></code></li>
+<li><code><a title="eff_word_net.generate_reference" href="generate_reference.html">eff_word_net.generate_reference</a></code></li>
+<li><code><a title="eff_word_net.ibm_generate" href="ibm_generate.html">eff_word_net.ibm_generate</a></code></li>
+<li><code><a title="eff_word_net.package_installation_scripts" href="package_installation_scripts.html">eff_word_net.package_installation_scripts</a></code></li>
+<li><code><a title="eff_word_net.streams" href="streams.html">eff_word_net.streams</a></code></li>
 </ul>
 </li>
 </ul>

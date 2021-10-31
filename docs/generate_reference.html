@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>efficientword.generate_reference API documentation</title>
+<title>eff_word_net.generate_reference API documentation</title>
 <meta name="description" content="Can be run directly in cli
 `python -m efficientword.generate_reference`" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
@@ -20,7 +20,7 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>efficientword.generate_reference</code></h1>
+<h1 class="title">Module <code>eff_word_net.generate_reference</code></h1>
 </header>
 <section id="section-intro">
 <p>Can be run directly in cli
@@ -33,100 +33,15 @@
 Can be run directly in cli 
 `python -m efficientword.generate_reference`
 &#34;&#34;&#34;
-
-import glob
-import librosa
-import tflite_runtime.interpreter as tflite
-import os
+from eff_word_net.audio_processing import audioToVector, fixPaddingIssues
+import os , glob
 import numpy as np
-import random
-from pprint import pprint
 import json
+from eff_word_net.package_installation_scripts import check_install_librosa
 
-location = os.path.dirname(os.path.realpath(__file__))
+check_install_librosa()
 
-logmelcalc_interpreter = tflite.Interpreter(
-        model_path=os.path.join(location,&#34;logmelcalc.tflite&#34;
-    )
-)
-
-logmelcalc_interpreter.allocate_tensors()
-
-input_index = logmelcalc_interpreter.get_input_details()[0][&#34;index&#34;]
-output_details = logmelcalc_interpreter.get_output_details()
-
-baseModel_interpreter = tflite.Interpreter(
-        model_path=os.path.join(location,&#34;./baseModel.tflite&#34;)
-    )
-baseModel_interpreter.allocate_tensors()
-
-base_model_inp = baseModel_interpreter.get_input_details()
-base_model_out = baseModel_interpreter.get_output_details()
-
-def _randomCrop(x:np.array,length=16000)-&gt;np.array :
-    assert(x.shape[0]&gt;length)
-    frontBits = random.randint(0,x.shape[0]-length) 
-    return x[frontBits:frontBits+length]
-
-def _addPadding(x:np.array,length=16000)-&gt;np.array :
-    assert(x.shape[0]&lt;length)
-    bitCountToBeAdded = length - x.shape[0]
-    frontBits = random.randint(0,bitCountToBeAdded)
-    #print(frontBits, bitCountToBeAdded-frontBits)
-    new_x = np.append(np.zeros(frontBits),x)
-    new_x = np.append(new_x,np.zeros(bitCountToBeAdded-frontBits))
-    return new_x
-
-def _removeExistingPadding(x:np.array)-&gt;np.array:
-    lastZeroBitBeforeAudio = 0 
-    firstZeroBitAfterAudio = len(x)
-    for i in range(len(x)):
-      if x[i]==0:
-        lastZeroBitBeforeAudio = i
-      else:
-        break
-    for i in range(len(x)-1,1,-1):
-      if x[i]==0:
-        firstZeroBitAfterAudio = i
-      else:
-        break
-    return x[lastZeroBitBeforeAudio:firstZeroBitAfterAudio]
-
-def _fixPaddingIssues(x:np.array,length=16000)-&gt; np.array:
-    x = _removeExistingPadding(x)
-    #print(&#34;Preprocessing Shape&#34;,x.shape[0])
-    if(x.shape[0]&gt;16000):
-      return _randomCrop(x,length=length)
-    elif(x.shape[0]&lt;16000):
-      return _addPadding(x,length=length)
-    else:
-      return x
-
-def audioToVector(inpAudio:np.array) -&gt; np.array :
-    &#34;&#34;&#34;
-    Converts 16000Hz sampled 1 sec of audio to vector embedding
-    Inp Parameters :
-
-        inpAudio  : np.array of shape (16000,)
-
-    Out Parameters :
-
-        1 vector embedding of shape (128,1)
-
-    &#34;&#34;&#34;
-    assert(inpAudio.shape==(16000,))
-
-    logmelcalc_interpreter.set_tensor(input_index,np.expand_dims(inpAudio/inpAudio.max(),axis=0).astype(&#34;float32&#34;))
-    logmelcalc_interpreter.invoke()
-    logmel_output = logmelcalc_interpreter.get_tensor(output_details[0][&#39;index&#39;])
-    baseModel_interpreter.set_tensor(
-        base_model_inp[0][&#34;index&#34;],
-        np.expand_dims(logmel_output,axis=(0,-1)).astype(&#34;float32&#34;)
-    )
-    baseModel_interpreter.invoke()
-    output_data = baseModel_interpreter.get_tensor(base_model_out[0][&#39;index&#39;])
-
-    return output_data
+import librosa
 
 
 def generate_reference_file(input_dir:str,output_dir:str,wakeword:str,debug:bool=False):
@@ -163,7 +78,7 @@ def generate_reference_file(input_dir:str,output_dir:str,wakeword:str,debug:bool
         x,_ = librosa.load(audio_file,sr=16000)
         embeddings.append(
                 audioToVector(
-                    _fixPaddingIssues(x)
+                    fixPaddingIssues(x)
                 )
             )
 
@@ -204,49 +119,7 @@ if __name__ == &#34;__main__&#34; :
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="efficientword.generate_reference.audioToVector"><code class="name flex">
-<span>def <span class="ident">audioToVector</span></span>(<span>inpAudio: <built-in function array>) ‑> <built-in function array></span>
-</code></dt>
-<dd>
-<div class="desc"><p>Converts 16000Hz sampled 1 sec of audio to vector embedding
-Inp Parameters :</p>
-<pre><code>inpAudio  : np.array of shape (16000,)
-</code></pre>
-<p>Out Parameters :</p>
-<pre><code>1 vector embedding of shape (128,1)
-</code></pre></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def audioToVector(inpAudio:np.array) -&gt; np.array :
-    &#34;&#34;&#34;
-    Converts 16000Hz sampled 1 sec of audio to vector embedding
-    Inp Parameters :
-
-        inpAudio  : np.array of shape (16000,)
-
-    Out Parameters :
-
-        1 vector embedding of shape (128,1)
-
-    &#34;&#34;&#34;
-    assert(inpAudio.shape==(16000,))
-
-    logmelcalc_interpreter.set_tensor(input_index,np.expand_dims(inpAudio/inpAudio.max(),axis=0).astype(&#34;float32&#34;))
-    logmelcalc_interpreter.invoke()
-    logmel_output = logmelcalc_interpreter.get_tensor(output_details[0][&#39;index&#39;])
-    baseModel_interpreter.set_tensor(
-        base_model_inp[0][&#34;index&#34;],
-        np.expand_dims(logmel_output,axis=(0,-1)).astype(&#34;float32&#34;)
-    )
-    baseModel_interpreter.invoke()
-    output_data = baseModel_interpreter.get_tensor(base_model_out[0][&#39;index&#39;])
-
-    return output_data</code></pre>
-</details>
-</dd>
-<dt id="efficientword.generate_reference.generate_reference_file"><code class="name flex">
+<dt id="eff_word_net.generate_reference.generate_reference_file"><code class="name flex">
 <span>def <span class="ident">generate_reference_file</span></span>(<span>input_dir: str, output_dir: str, wakeword: str, debug: bool = False)</span>
 </code></dt>
 <dd>
@@ -302,7 +175,7 @@ the samples
         x,_ = librosa.load(audio_file,sr=16000)
         embeddings.append(
                 audioToVector(
-                    _fixPaddingIssues(x)
+                    fixPaddingIssues(x)
                 )
             )
 
@@ -343,13 +216,12 @@ the samples
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="efficientword" href="index.html">efficientword</a></code></li>
+<li><code><a title="eff_word_net" href="index.html">eff_word_net</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="efficientword.generate_reference.audioToVector" href="#efficientword.generate_reference.audioToVector">audioToVector</a></code></li>
-<li><code><a title="efficientword.generate_reference.generate_reference_file" href="#efficientword.generate_reference.generate_reference_file">generate_reference_file</a></code></li>
+<li><code><a title="eff_word_net.generate_reference.generate_reference_file" href="#eff_word_net.generate_reference.generate_reference_file">generate_reference_file</a></code></li>
 </ul>
 </li>
 </ul>
