@@ -20,20 +20,20 @@ The paper is currently under review, [click here](https://arxiv.org/abs/2111.003
 ## Python Version Requirements
 
 This Library works between python versions:
-    3.6 to 3.9
+    `3.6 to 3.9`
 <br>
 
 ## Dependencies Installation
-Before running the pip installation command for the library, few dependencies need to be installed manually
+Before running the pip installation command for the library, few dependencies need to be installed manually.
 
 * [PyAudio (depends on PortAudio)](https://abhgog.gitbooks.io/pyaudio-manual/content/installation.html)
 * [Tflite (tensorflow lightweight binaries)](https://www.tensorflow.org/lite/guide/python#install_tensorflow_lite_for_python)
 * [Librosa (Binaries might not be available for certain systems)](https://github.com/librosa/librosa)
-Mac OS M* and Raspberry Pi users might have to compile these dependecies
+Mac OS M* and Raspberry Pi users might have to compile these dependecies.
 
-***tflite*** package cannot be listed in requirements.txt hence will be automatically installed when the package is initialized in the system
+***tflite*** package cannot be listed in requirements.txt hence will be automatically installed when the package is initialized in the system.
 
-***librosa*** package is not required for inference only cases , however when generate_reference is called , will be automatically installed
+***librosa*** package is not required for inference only cases , however when generate_reference is called , will be automatically installed.
 
 <br>
 
@@ -53,7 +53,7 @@ import eff_word_net
 
 ## Demo
 After installing the packages, you can run the Demo
-script inbuilt with library (ensure you have a working mic)
+script inbuilt with library (ensure you have a working mic).
 
 Command to run demo
 ```
@@ -64,8 +64,8 @@ python -m eff_word_net.engine
 ## Generating Custom Wakewords
 
 For any new hotword, the library needs information about the hotword, this
-information is obtained from a file called `{wakeword}_ref.json` . 
-Eg: For the wakeword 'alexa' , the library would need the file called `alexa_ref.json`
+information is obtained from a file called `{wakeword}_ref.json`. 
+Eg: For the wakeword 'alexa', the library would need the file called `alexa_ref.json`
 
 These files can be generated with the following procedure:
 
@@ -167,5 +167,5 @@ while True :
 <br>
 
 ## TODO :
-* Add contribute section in README
-* Add audio file handler in streams
+* Add contribute section in README.
+* Add audio file handler in streams.
