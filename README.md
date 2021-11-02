@@ -12,6 +12,10 @@ a python library from the authors.
 The library is purely written with python and uses Google's Tflite
 implemenation for faster realtime inference.
 
+### Demo of EfficientWord-Net in Pi
+
+https://user-images.githubusercontent.com/44740048/139785995-3330d65a-cfe1-4e92-8769-ee389a122acc.mp4
+
 ## Access preprint
 
 The paper is currently under review, [click here](https://arxiv.org/abs/2111.00379) to access the preprint and the training code will be available for public access once the paper is published.
