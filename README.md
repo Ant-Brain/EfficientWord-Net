@@ -14,7 +14,7 @@ implemenation for faster realtime inference.
 
 ## Access preprint
 
-The paper is currently under review, once published all the preprint and the training code will be available for public access
+The paper is currently under review, [click here](https://arxiv.org/abs/2111.00379) to access the preprint and the training code will be available for public access once the paper is published.
 <br>
 
 ## Python Version Requirements
