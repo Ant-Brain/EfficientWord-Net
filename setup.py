@@ -12,8 +12,6 @@ setup(
     packages = ['eff_word_net'],
     install_requires = open("./requirements.txt",'r').read().split("\n"),
     classifiers = [
-        "Developement Status :: 4 - Beta"
-        "Operating System :: OS Independent",
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
