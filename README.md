@@ -18,7 +18,7 @@ https://user-images.githubusercontent.com/44740048/139785995-3330d65a-cfe1-4e92-
 
 ## Access preprint
 
-The paper is currently under review, [click here](https://arxiv.org/abs/2111.00379) to access the preprint and the training code will be available for public access once the paper is published.
+The research paper is currently under review in IEEE, [click here](https://arxiv.org/abs/2111.00379) to access the preprint and the training code will be available for public access once the paper is published.
 <br>
 
 ## Python Version Requirements
