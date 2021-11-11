@@ -178,15 +178,17 @@ while True :
 <br>
 
 Access documentation of the library from here : https://ant-brain.github.io/EfficientWord-Net/
+## FAQ :
+* **Hotword Perfomance is bad** : if you are having some issue like this , feel to ask the same in [discussions](https://github.com/Ant-Brain/EfficientWord-Net/discussions/4)
 
 ## CONTRIBUTION:
 * If you have an ideas to make the project better, feel free to ping us in [discussions](https://github.com/Ant-Brain/EfficientWord-Net/discussions/3)
 * The current [logmelcalc.tflite](/eff_word_net/logmelcalc.tflite) graph can convert only 1 audio frame to Log Mel Spectrogram at a time. It will be of a great help if tensorflow guru's outthere help us out with this.
 
-
 ## TODO :
 
 * Add audio file handler in streams. PR's are welcome.
+* Remove librosa requirement to encourage generating reference files directly in edge devices
 
 ## SUPPORT US:
 Our hotword detector's performance is notably low when compared to Porcupine. We have thought about better NN architectures for the engine and hope to outperform Porcupine. This has been our undergrad project. Hence your support and encouragement will motivate us to develop the engine. If you loved this project recommend this to your peers, give us a 🌟 in Github and a clap 👏 in [medium](https://link.medium.com/yMBmWGM03kb).
