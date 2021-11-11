@@ -192,3 +192,5 @@ Access documentation of the library from here : https://ant-brain.github.io/Effi
 
 ## SUPPORT US:
 Our hotword detector's performance is notably low when compared to Porcupine. We have thought about better NN architectures for the engine and hope to outperform Porcupine. This has been our undergrad project. Hence your support and encouragement will motivate us to develop the engine. If you loved this project recommend this to your peers, give us a 🌟 in Github and a clap 👏 in [medium](https://link.medium.com/yMBmWGM03kb).
+
+## LICENCSE : [Apache License 2.0](/LICENSE.md)
