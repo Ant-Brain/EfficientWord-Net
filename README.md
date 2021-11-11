@@ -64,6 +64,8 @@ import eff_word_net
 After installing the packages, you can run the Demo
 script inbuilt with library (ensure you have a working mic).
 
+Accesss Documentation from : https://ant-brain.github.io/EfficientWord-Net/
+
 Command to run demo
 ```
 python -m eff_word_net.engine
