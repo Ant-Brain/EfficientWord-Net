@@ -3,9 +3,14 @@
 
 ## Hotword detection based on one-shot learning
 
+Home assistants require special phrases called hotwords to get activated (eg:"ok google")
+
 EfficientWord-Net is an hotword detection engine based on one-shot
 learning inspired from FaceNet's Siamese Network Architecture.
-
+Works very similar to face recognition , just requires a few samples of your own custom hotword to get going. 
+**No extra training or huge datasets required!!**
+This will allow developers to add custom hotwords to their programs without a sweat or any extra charges.
+Just like google assistant's hotword detector, the engine performs the best when 3-4 hotword samples are collected directly from the user
 This repository is an official implemenation of EfficientWord-Net as
 a python library from the authors.
 
@@ -169,6 +174,8 @@ while True :
         print(result[0],f",Confidence {result[1]:0.4f}")
 ```
 <br>
+
+Access documentation of the library from here : https://ant-brain.github.io/EfficientWord-Net/
 
 ## CONTRIBUTION:
 * If you have an ideas to make the project better, feel free to ping us in [discussions](https://github.com/Ant-Brain/EfficientWord-Net/discussions/3)
