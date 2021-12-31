@@ -95,18 +95,17 @@ The pathname of the generated wakeword needs to passed to the HotwordDetector de
 ```python
 HotwordDetector(
         hotword="hello",
-        reference_file = "/full/path/name/of/hello_ref.json")
+        reference_file = "/full/path/name/of/hello_ref.json"),
+        activation_count = 3 #2 by default
 )
 ```
-
-Few wakewords such as **Google**, **Firefox**, **Alexa**, **Mobile**, **Siri** the library has predefined embeddings readily available in the library installation directory, its path is readily available in the following variable
+Few wakewords such as **Mycroft**, **Google**, **Firefox**, **Alexa**, **Mobile**, **Siri** the library has predefined embeddings readily available in the library installation directory, its path is readily available in the following variable
 
 ```python
 from eff_word_net import samples_loc
 ```
 
 <br>
-
 
 ## Try your first single hotword detection script
 
@@ -116,18 +115,19 @@ from eff_word_net.streams import SimpleMicStream
 from eff_word_net.engine import HotwordDetector
 from eff_word_net import samples_loc
 
-alexa_hw = HotwordDetector(
-        hotword="Alexa",
-        reference_file = os.path.join(samples_loc,"alexa_ref.json"),
+mycroft_hw = HotwordDetector(
+        hotword="Mycroft",
+        reference_file = os.path.join(samples_loc,"mycroft_ref.json"),
+        activation_count=3
     )
 
 mic_stream = SimpleMicStream()
 mic_stream.start_stream()
 
-print("Say Alexa ")
+print("Say Mycroft ")
 while True :
     frame = mic_stream.getFrame()
-    result = alexa_hw.checkFrame(frame)
+    result = mycroft_hw.checkFrame(frame)
     if(result):
         print("Wakeword uttered")
 
@@ -145,6 +145,7 @@ of running `checkFrame()` of each wakeword individually
 import os
 from eff_word_net.streams import SimpleMicStream
 from eff_word_net import samples_loc
+print(samples_loc)
 
 alexa_hw = HotwordDetector(
         hotword="Alexa",
@@ -153,31 +154,44 @@ alexa_hw = HotwordDetector(
 
 siri_hw = HotwordDetector(
         hotword="Siri",
-        reference_file = os.path.join(samples_loc,"siri_ref.json")
-        )
+        reference_file = os.path.join(samples_loc,"siri_ref.json"),
+    )
 
-google_hw = HotwordDetector(
-        hotword="Google",
-        reference_file = os.path.join(samples_loc,"google_ref.json")
+mycroft_hw = HotwordDetector(
+        hotword="mycroft",
+        reference_file = os.path.join(samples_loc,"mycroft_ref.json"),
+        activation_count=3
     )
 
 multi_hw_engine = MultiHotwordDetector(
-        detector_collection = [alexa_hw,siri_hw,google_hw]
-    ) # Efficient multi hotword detector
+        detector_collection = [
+            alexa_hw,
+            siri_hw,
+            mycroft_hw,
+        ],
+    )
 
 mic_stream = SimpleMicStream()
 mic_stream.start_stream()
 
-print("Say Google / Alexa / Siri")
+print("Say Mycroft / Alexa / Siri")
+
 while True :
     frame = mic_stream.getFrame()
     result = multi_hw_engine.findBestMatch(frame)
     if(None not in result):
         print(result[0],f",Confidence {result[1]:0.4f}")
+
 ```
 <br>
 
 Access documentation of the library from here : https://ant-brain.github.io/EfficientWord-Net/
+
+
+## About `activation_count` in `HotwordDetector`
+Documenatation with detailed explanation on the usage of `activation_count` parameter in `HotwordDetector` is in the making , For now understand that for long hotwords 3 is advisable and 2 for smaller hotwords. If the detector gives out multiple triggers for a single utterance, try increasing `activation_count`. To experiment begin with smaller values. Default value for the same is 2
+
+
 ## FAQ :
 * **Hotword Perfomance is bad** : if you are having some issue like this , feel to ask the same in [discussions](https://github.com/Ant-Brain/EfficientWord-Net/discussions/4)
 
@@ -189,6 +203,7 @@ Access documentation of the library from here : https://ant-brain.github.io/Effi
 
 * Add audio file handler in streams. PR's are welcome.
 * Remove librosa requirement to encourage generating reference files directly in edge devices
+* Add more detailed documentation explaining slider window concept
 
 ## SUPPORT US:
 Our hotword detector's performance is notably low when compared to Porcupine. We have thought about better NN architectures for the engine and hope to outperform Porcupine. This has been our undergrad project. Hence your support and encouragement will motivate us to develop the engine. If you loved this project recommend this to your peers, give us a 🌟 in Github and a clap 👏 in [medium](https://link.medium.com/yMBmWGM03kb).

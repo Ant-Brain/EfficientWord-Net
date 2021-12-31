@@ -3,7 +3,7 @@ from glob import glob
 
 setup(
     name = 'EfficientWord-Net',
-    version = '0.0.1',
+    version = '0.1.1',
     description = 'Few Shot Learning based Hotword Detection Engine',
     long_description = open("./README.md",'r').read(),
     long_description_content_type = 'text/markdown',

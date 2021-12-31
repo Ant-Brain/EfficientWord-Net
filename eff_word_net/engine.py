@@ -14,7 +14,14 @@ class HotwordDetector :
     EfficientWord based HotwordDetector Engine implementation class
     """
 
-    def __init__(self,hotword:str,reference_file:str,threshold:float=0.85):
+    def __init__(
+            self,
+            hotword:str,
+            reference_file:str,
+            threshold:float=0.9,
+            activation_count=2,
+            continuous=True,
+            verbose = False):
         """
         Intializes hotword detector instance
 
@@ -27,6 +34,8 @@ class HotwordDetector :
 
             threshold: float value between 0 and 1 , min similarity score
             required for a match
+
+            continuous: bool value to know if a HotwordDetector is operating on a single continuous stream , else false
 
         """
         assert isfile(reference_file), \
@@ -43,9 +52,20 @@ class HotwordDetector :
 
         self.hotword = hotword
         self.threshold = threshold
+        self.continuous = continuous
+
+        self.__repeat_count = 0
+        self.__activation_count = activation_count
+        self.verbose = verbose
+
+        self.__relaxation_time_step = 4 #number of cycles to prevent recall after a trigger
+        self.__is_it_a_trigger = False
 
     def __repr__(self):
         return f"Hotword: {self.hotword}"
+
+    def is_it_a_trigger(self):
+        return self.__is_it_a_trigger
 
     def getMatchScoreVector(self,inp_vec:np.array) -> float :
         """
@@ -71,8 +91,24 @@ class HotwordDetector :
         for i in top3 :
             out+= (1-out) * i
 
-        return out
+        #assert self.redundancy_count>0 , "redundancy_count count can only be greater than 0"
 
+        self.__is_it_a_trigger = False
+
+        if self.__repeat_count < 0 :
+            self.__repeat_count += 1
+
+        elif out > self.threshold :
+            if self.__repeat_count == self.__activation_count -1 :
+                self.__repeat_count = - self.__relaxation_time_step
+                self.__is_it_a_trigger = True
+            else:
+                self.__repeat_count +=1
+
+        elif self.__repeat_count > 0:
+            self.__repeat_count -= 1
+
+        return out
 
     def checkVector(self,inp_vec:np.array) -> bool:
         """
@@ -85,7 +121,12 @@ class HotwordDetector :
         assert inp_vec.shape == (1,128), \
             "Inp vector should be of shape (1,128)"
 
-        return self.getMatchScoreVector(inp_vec) > self.threshold
+        score = self.getMatchScoreVector(inp_vec)
+
+        return self.is_it_a_trigger() if self.continuous else score >= self.threshold
+
+    def get_repeat_count(self)-> int :
+        return self.__repeat_count
 
     def getMatchScoreFrame(
             self,
@@ -110,6 +151,7 @@ class HotwordDetector :
 
         """
 
+        """
         if(not unsafe):
             upperPoint = max(
                 (
@@ -118,6 +160,7 @@ class HotwordDetector :
             )
             if(upperPoint > 0.2):
                 return False
+        """
 
         assert inp_audio_frame.shape == (RATE,), \
             f"Audio frame needs to be a 1 sec {RATE}Hz sampled vector"
@@ -126,7 +169,7 @@ class HotwordDetector :
             audioToVector(
                 inp_audio_frame
             )
-        )
+            )
 
 
     def checkFrame(self,inp_audio_frame:np.array,unsafe:bool = False) -> bool :
@@ -152,6 +195,7 @@ class HotwordDetector :
         assert inp_audio_frame.shape == (RATE,), \
             f"Audio frame needs to be a 1 sec {RATE}Hz sampled vector"
 
+        """
         if(not unsafe):
             upperPoint = max(
                 (
@@ -160,8 +204,10 @@ class HotwordDetector :
             )
             if(upperPoint > 0.2):
                 return False
+        """
+        score = self.getMatchScoreFrame(inp_audio_frame)
 
-        return self.getMatchScoreFrame(inp_audio_frame) > self.threshold
+        return self.is_it_a_trigger() if self.continuous else score >= self.threshold
 
 HotwordDetectorArray = List[HotwordDetector]
 MatchInfo = Tuple[HotwordDetector,float]
@@ -176,6 +222,7 @@ class MultiHotwordDetector :
     def __init__(
         self,
         detector_collection:HotwordDetectorArray,
+        continuous=True
     ):
         """
         Inp Parameters:
@@ -190,6 +237,7 @@ class MultiHotwordDetector :
                 "Mixed Array received, send HotwordDetector only array"
 
         self.detector_collection = detector_collection
+        self.continous = continuous
 
     def findBestMatch(
             self,
@@ -218,6 +266,7 @@ class MultiHotwordDetector :
         assert inp_audio_frame.shape == (RATE,), \
             f"Audio frame needs to be a 1 sec {RATE}Hz sampled vector"
 
+        """
         if(not unsafe):
             upperPoint = max(
                 (
@@ -226,7 +275,7 @@ class MultiHotwordDetector :
             )
             if(upperPoint > 0.2):
                 return None , None
-
+        """
         embedding = audioToVector(inp_audio_frame)
 
         best_match_detector:str = None
@@ -234,8 +283,13 @@ class MultiHotwordDetector :
 
         for detector in self.detector_collection :
             score = detector.getMatchScoreVector(embedding)
-            if(score<detector.threshold):
-                continue
+            if(self.continous):
+                if(not detector.is_it_a_trigger()):
+                    continue
+            else:
+                if(score < detector.threshold):
+                    continue
+
             if(score>best_match_score):
                 best_match_score = score
                 best_match_detector = detector
@@ -282,7 +336,7 @@ class MultiHotwordDetector :
         embedding = audioToVector(inp_audio_frame)
 
         matches:MatchInfoArray = []
-        
+
         best_match_score = 0.0
         for detector in self.detector_collection :
             score = detector.getMatchScoreVector(embedding)
@@ -301,6 +355,7 @@ if __name__ == "__main__" :
     from eff_word_net.streams import SimpleMicStream
     from eff_word_net import samples_loc
     print(samples_loc)
+
     alexa_hw = HotwordDetector(
             hotword="Alexa",
             reference_file = os.path.join(samples_loc,"alexa_ref.json"),
@@ -308,22 +363,28 @@ if __name__ == "__main__" :
 
     siri_hw = HotwordDetector(
             hotword="Siri",
-            reference_file = os.path.join(samples_loc,"siri_ref.json")
-            )
+            reference_file = os.path.join(samples_loc,"siri_ref.json"),
+        )
 
-    google_hw = HotwordDetector(
-            hotword="Google",
-            reference_file = os.path.join(samples_loc,"google_ref.json")
-            )
+    mycroft_hw = HotwordDetector(
+            hotword="mycroft",
+            reference_file = os.path.join(samples_loc,"mycroft_ref.json"),
+            activation_count=3
+        )
 
     multi_hw_engine = MultiHotwordDetector(
-            detector_collection = [alexa_hw,siri_hw,google_hw]
-            )
+            detector_collection = [
+                alexa_hw,
+                siri_hw,
+                mycroft_hw,
+            ],
+        )
 
     mic_stream = SimpleMicStream()
     mic_stream.start_stream()
 
-    print("Say Google / Alexa / Siri")
+    print("Say Mycroft / Alexa / Siri")
+
     while True :
         frame = mic_stream.getFrame()
         result = multi_hw_engine.findBestMatch(frame)
