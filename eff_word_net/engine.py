@@ -7,6 +7,7 @@ from typing import Tuple , List
 
 from eff_word_net.audio_processing import audioToVector
 from eff_word_net import RATE
+from time import time as current_time_in_sec
 
 class HotwordDetector :
 
@@ -19,7 +20,7 @@ class HotwordDetector :
             hotword:str,
             reference_file:str,
             threshold:float=0.9,
-            activation_count=2,
+            relaxation_time=0.8,
             continuous=True,
             verbose = False):
         """
@@ -34,6 +35,9 @@ class HotwordDetector :
 
             threshold: float value between 0 and 1 , min similarity score
             required for a match
+
+            relaxation_time : the detector uses a sliding window approach to check for triggers, 
+            which results in multiple triggers per utterance. This parameter mentions the relaxation_time for the next trigger
 
             continuous: bool value to know if a HotwordDetector is operating on a single continuous stream , else false
 
@@ -54,25 +58,22 @@ class HotwordDetector :
         self.threshold = threshold
         self.continuous = continuous
 
-        self.__repeat_count = 0
-        self.__activation_count = activation_count
+        self.relaxation_time = relaxation_time
         self.verbose = verbose
 
-        self.__relaxation_time_step = 4 #number of cycles to prevent recall after a trigger
-        self.__is_it_a_trigger = False
+        self.__last_activation_time = current_time_in_sec()
 
     def __repr__(self):
         return f"Hotword: {self.hotword}"
 
-    def is_it_a_trigger(self):
-        return self.__is_it_a_trigger
+    def __crossedRelaxationTime(self):
+        return current_time_in_sec()-self.__last_activation_time > self.relaxation_time
 
-    def getMatchScoreVector(self,inp_vec:np.array) -> float :
+    def scoreVector(self,inp_vec:np.array) -> float :
         """
         **Use this directly only if u know what you are doing**
 
-        Returns the match score from 0 to 1 for an embedding with
-        given reference file
+        Returns a float with confidence of match 0 - 1
         """
 
         assert inp_vec.shape == (1,128), \
@@ -91,44 +92,16 @@ class HotwordDetector :
         for i in top3 :
             out+= (1-out) * i
 
-        #assert self.redundancy_count>0 , "redundancy_count count can only be greater than 0"
-
-        self.__is_it_a_trigger = False
-
-        if self.__repeat_count < 0 :
-            self.__repeat_count += 1
-
-        elif out > self.threshold :
-            if self.__repeat_count == self.__activation_count -1 :
-                self.__repeat_count = - self.__relaxation_time_step
-                self.__is_it_a_trigger = True
-            else:
-                self.__repeat_count +=1
-
-        elif self.__repeat_count > 0:
-            self.__repeat_count -= 1
+        if self.continuous :
+            if not self.__crossedRelaxationTime() :
+                return 0.001
+            elif out>self.threshold :
+                self.__last_activation_time = current_time_in_sec()
 
         return out
 
-    def checkVector(self,inp_vec:np.array) -> bool:
-        """
-        **Use this directly only if u know what you are doing**
 
-        Checks if given a given embedding matches with
-        given reference file
-        """
-
-        assert inp_vec.shape == (1,128), \
-            "Inp vector should be of shape (1,128)"
-
-        score = self.getMatchScoreVector(inp_vec)
-
-        return self.is_it_a_trigger() if self.continuous else score >= self.threshold
-
-    def get_repeat_count(self)-> int :
-        return self.__repeat_count
-
-    def getMatchScoreFrame(
+    def scoreFrame(
             self,
             inp_audio_frame:np.array,
             unsafe:bool = False) -> float :
@@ -141,17 +114,20 @@ class HotwordDetector :
             inp_audio_frame : np.array of 1channel 1 sec 16000Hz sampled audio 
             frame
             unsafe : bool value, set to False by default to prevent engine
-            processing continuous speech , to minimalize false positives
+            processing continuous speech or silence, to minimalize false positives
 
         **Note : change unsafe to True only if you know what you are doing**
 
         Out Parameters:
 
-            float , ranges btw 0 to 1 . Higher value denoting higher match
-
+            {
+                "match":True or False,
+                "confidence":float value
+            }
+                 or 
+            None when no voice activity is identified
         """
 
-        """
         if(not unsafe):
             upperPoint = max(
                 (
@@ -159,55 +135,21 @@ class HotwordDetector :
                 )[:RATE//10]
             )
             if(upperPoint > 0.2):
-                return False
-        """
+                return None
 
         assert inp_audio_frame.shape == (RATE,), \
             f"Audio frame needs to be a 1 sec {RATE}Hz sampled vector"
 
-        return self.getMatchScoreVector(
+        score = self.scoreVector(
             audioToVector(
                 inp_audio_frame
             )
-            )
+        )
 
-
-    def checkFrame(self,inp_audio_frame:np.array,unsafe:bool = False) -> bool :
-        """
-        Converts given audio frame to embedding and checks for similarity
-        with given reference file
-
-        Inp Parameters:
-
-            inp_audio_frame : np.array of 1channel 1 sec 16000Hz sampled audio 
-            frame
-            unsafe : bool value, set to False by default to prevent engine
-            processing continuous speech , to minimalize false positives
-
-        **Note : change unsafe to True only if you know what you are doing**
-
-        Out Parameters:
-
-            bool , conveys if given frame has a likely match of the hotword
-
-        """
-
-        assert inp_audio_frame.shape == (RATE,), \
-            f"Audio frame needs to be a 1 sec {RATE}Hz sampled vector"
-
-        """
-        if(not unsafe):
-            upperPoint = max(
-                (
-                    inp_audio_frame/inp_audio_frame.max()
-                )[:RATE//10]
-            )
-            if(upperPoint > 0.2):
-                return False
-        """
-        score = self.getMatchScoreFrame(inp_audio_frame)
-
-        return self.is_it_a_trigger() if self.continuous else score >= self.threshold
+        return {
+                "match":score >= self.threshold,
+            "confidence":score
+        }
 
 HotwordDetectorArray = List[HotwordDetector]
 MatchInfo = Tuple[HotwordDetector,float]
@@ -282,18 +224,14 @@ class MultiHotwordDetector :
         best_match_score:float = 0.0
 
         for detector in self.detector_collection :
-            score = detector.getMatchScoreVector(embedding)
-            if(self.continous):
-                if(not detector.is_it_a_trigger()):
-                    continue
-            else:
-                if(score < detector.threshold):
-                    continue
+            score = detector.scoreVector(embedding)
+
+            if(score < detector.threshold):
+                continue
 
             if(score>best_match_score):
                 best_match_score = score
                 best_match_detector = detector
-
         return (best_match_detector,best_match_score)
 
     def findAllMatches(
@@ -324,7 +262,7 @@ class MultiHotwordDetector :
             f"Audio frame needs to be a 1 sec {RATE}Hz sampled vector"
 
 
-        if(not unsafe):
+        if self.continous and (not unsafe):
             upperPoint = max(
                 (
                     inp_audio_frame/inp_audio_frame.max()
@@ -340,14 +278,21 @@ class MultiHotwordDetector :
         best_match_score = 0.0
         for detector in self.detector_collection :
             score = detector.getMatchScoreVector(embedding)
+            print(detector,score,end="|")
             if(score<detector.threshold):
                 continue
-            if(score>best_match_score):
-                best_match_score = score
+            if(len(matches)>0):
+                for i in range(len(matches)):
+                    if matches[i][1] > score :
+                        matches.insert(i,(detector,score))
+                        break
+                else:
+                    matches.append(i,(detector,score))
+            else:
                 matches.append(
-                        (detector,best_match_score)
+                        (detector,score)
                         )
-
+        print()
         return matches
 
 if __name__ == "__main__" :
@@ -369,7 +314,6 @@ if __name__ == "__main__" :
     mycroft_hw = HotwordDetector(
             hotword="mycroft",
             reference_file = os.path.join(samples_loc,"mycroft_ref.json"),
-            activation_count=3
         )
 
     multi_hw_engine = MultiHotwordDetector(

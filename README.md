@@ -84,6 +84,12 @@ One needs to collect few 4 to 10 uniquely sounding pronunciations
 of a given wakeword. Then put them into a seperate folder, which doesnt contain 
 anything else.
 
+Or one could use the following command to generate audio files for a given word, uses ibm neural tts demo api, Kindly dont over use it for our sake (lol)
+
+```bash
+python -m eff_word_net.ibm_generate
+```
+
 Finally run this command, it will ask for the input folder's location 
 (containing the audio files) and the output folder (where _ref.json file will be stored).
 ```
@@ -96,9 +102,17 @@ The pathname of the generated wakeword needs to passed to the HotwordDetector de
 HotwordDetector(
         hotword="hello",
         reference_file = "/full/path/name/of/hello_ref.json"),
-        activation_count = 3 #2 by default
+        threshold=0.9, #min confidence required to consider a trigger
+        relaxation_time = 0.8 #default value ,in seconds
 )
 ```
+relaxation time parameter is used to determine the min time between any 2 triggers, any potential triggers before the relaxation_time will be cancelled
+
+The detector operates on a sliding widow approach resulting in multiple triggers for single utterance of a hotword, the relaxation_time parameter can used to control the multiple triggers, in most cases 0.8sec(default) will do 
+
+<br>
+
+## Out of the box sample hotwords
 Few wakewords such as **Mycroft**, **Google**, **Firefox**, **Alexa**, **Mobile**, **Siri** the library has predefined embeddings readily available in the library installation directory, its path is readily available in the following variable
 
 ```python
@@ -118,7 +132,6 @@ from eff_word_net import samples_loc
 mycroft_hw = HotwordDetector(
         hotword="Mycroft",
         reference_file = os.path.join(samples_loc,"mycroft_ref.json"),
-        activation_count=3
     )
 
 mic_stream = SimpleMicStream()
@@ -127,9 +140,12 @@ mic_stream.start_stream()
 print("Say Mycroft ")
 while True :
     frame = mic_stream.getFrame()
-    result = mycroft_hw.checkFrame(frame)
-    if(result):
-        print("Wakeword uttered")
+    result = mycroft_hw.scoreFrame(frame)
+    if result==None :
+        #no voice activity
+        continue
+    if(result["match"]):
+        print("Wakeword uttered",result["confidence"])
 
 ```
 <br>
@@ -138,8 +154,7 @@ while True :
 ## Detecting Mulitple Hotwords from audio streams
 
 The library provides a computation friendly way 
-to detect multiple hotwords from a given stream, installed
-of running `checkFrame()` of each wakeword individually
+to detect multiple hotwords from a given stream, instead of running `scoreFrame()` of each wakeword individually
 
 ```python
 import os
@@ -188,8 +203,10 @@ while True :
 Access documentation of the library from here : https://ant-brain.github.io/EfficientWord-Net/
 
 
-## About `activation_count` in `HotwordDetector`
-Documenatation with detailed explanation on the usage of `activation_count` parameter in `HotwordDetector` is in the making , For now understand that for long hotwords 3 is advisable and 2 for smaller hotwords. If the detector gives out multiple triggers for a single utterance, try increasing `activation_count`. To experiment begin with smaller values. Default value for the same is 2
+## Change notes from v0.1.1 to 0.2.2
+major changes to replace complex friking logic of handling poly triggers per utterance into more simpler logic and more simpler api for programmers
+
+Introduces breaking changes
 
 
 ## FAQ :

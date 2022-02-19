@@ -1,20 +1,22 @@
 import os
-from efficientword.streams import SimpleMicStream
-from efficientword.engine import HotwordDetector , MultiHotwordDetector
-from efficientword import samples_loc
+from eff_word_net.streams import SimpleMicStream
+from eff_word_net.engine import HotwordDetector
+from eff_word_net import samples_loc
 
-alexa_hw = HotwordDetector(
-        hotword="Alexa",
-        reference_file = os.path.join(samples_loc,"alexa_ref.json"),
+mycroft_hw = HotwordDetector(
+        hotword="Mycroft",
+        reference_file = os.path.join(samples_loc,"mycroft_ref.json"),
     )
 
 mic_stream = SimpleMicStream()
 mic_stream.start_stream()
 
-print("Say Alexa ")
+print("Say Mycroft ")
 while True :
     frame = mic_stream.getFrame()
-    result = alexa_hw.checkFrame(frame)
-    if(result):
-        print("Wakeword uttered")
-
+    result = mycroft_hw.scoreFrame(frame)
+    if result==None :
+        #no voice activity
+        continue
+    if(result["match"]):
+        print("Wakeword uttered",result["confidence"])
