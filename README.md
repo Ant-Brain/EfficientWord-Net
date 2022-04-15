@@ -208,7 +208,10 @@ major changes to replace complex friking logic of handling poly triggers per utt
 
 Introduces breaking changes
 
-
+## Limitations in Current model
+- trained on single words , hence may result in bizare behaviour on using phrases like "Hey xxx"
+- audio processing window limited to 1 sec. Hence will not work effectively for longer hotwords
+ 
 ## FAQ :
 * **Hotword Perfomance is bad** : if you are having some issue like this , feel to ask the same in [discussions](https://github.com/Ant-Brain/EfficientWord-Net/discussions/4)
 
