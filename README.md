@@ -5,7 +5,7 @@
 
 Home assistants require special phrases called hotwords to get activated (eg:"ok google")
 
-EfficientWord-Net is an hotword detection engine based on one-shot
+EfficientWord-Net is an hotword detection engine based on few-shot
 learning inspired from FaceNet's Siamese Network Architecture.
 Works very similar to face recognition , just requires a few samples of your own custom hotword to get going. 
 **No extra training or huge datasets required!!**
