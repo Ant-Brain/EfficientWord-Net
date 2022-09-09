@@ -23,7 +23,7 @@ https://user-images.githubusercontent.com/44740048/139785995-3330d65a-cfe1-4e92-
 
 ## Access paper
 
-[click here](https://worldscientific.com/doi/10.1142/S0219649222500599) to access the research paper.
+[Click here](https://worldscientific.com/doi/10.1142/S0219649222500599) to access the research paper.
 <br>
 
 ## Python Version Requirements
