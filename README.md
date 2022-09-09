@@ -1,7 +1,7 @@
 # EfficientWord-Net
 ![Versions : 3.6 ,3.7,3.8,3.9](https://camo.githubusercontent.com/a7b5b417de938c1faf3602c7f48f26fde8761a977be85390fd6c0d191e210ba8/68747470733a2f2f696d672e736869656c64732e696f2f707970692f707976657273696f6e732f74656e736f72666c6f772e7376673f7374796c653d706c6173746963)
 
-## Hotword detection based on one-shot learning
+## Hotword detection based on few-shot learning
 
 Home assistants require special phrases called hotwords to get activated (eg:"ok google")
 
