@@ -1,0 +1,22 @@
+@article{doi:10.1142/S0219649222500599,
+author = {Chidhambararajan, R. and Rangapur, Aman and Sibi Chakkaravarthy, S. and Cherukuri, Aswani Kumar and Cruz, Meenalosini Vimal and Ilango, S. Sudhakar},
+title = {EfficientWord-Net: An Open Source Hotword Detection Engine Based on Few-Shot Learning},
+journal = {Journal of Information \& Knowledge Management},
+volume = {21},
+number = {04},
+pages = {2250059},
+year = {2022},
+doi = {10.1142/S0219649222500599},
+URL = {https://doi.org/10.1142/S0219649222500599},
+eprint = {https://doi.org/10.1142/S0219649222500599},
+abstract = { Voice assistants like Siri, Google Assistant and Alexa are used widely across the globe for home automation.
+They require the use of unique phrases, also known as hotwords, to wake them up and perform an action like “Hey Alexa!”,
+“Ok, Google!”, “Hey, Siri!”. These hotword detectors are lightweight real-time engines whose purpose is to detect the
+hotwords uttered by the user. However, existing engines require thousands of training samples or is closed source 
+seeking a fee. This paper attempts to solve the same, by presenting the design and implementation of a lightweight,
+easy-to-implement hotword detection engine based on few-shot learning. The engine detects the hotword uttered by the 
+user in real-time with just a few training samples of the hotword. This approach is efficient when compared to existing
+implementations because the process of adding a new hotword to the existing systems requires enormous amounts of positive
+and negative training samples, and the model needs to retrain for every hotword, making the existing implementations 
+inefficient in terms of computation and cost. The architecture proposed in this paper has achieved an accuracy of 95.40\%.}
+}
