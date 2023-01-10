@@ -22,11 +22,11 @@ implemenation for faster realtime inference.
 https://user-images.githubusercontent.com/44740048/139785995-3330d65a-cfe1-4e92-8769-ee389a122acc.mp4
 
 ## Access training file
-[Click here](./training.ipynb)
+[Training File](./training.ipynb)
 
 ## Access paper
 
-[Click here](https://worldscientific.com/doi/10.1142/S0219649222500599) to access the research paper.
+[Research Paper](https://worldscientific.com/doi/10.1142/S0219649222500599) to access the research paper.
 <br>
 
 ## Python Version Requirements
