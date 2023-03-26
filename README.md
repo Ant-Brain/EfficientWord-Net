@@ -24,6 +24,9 @@ https://user-images.githubusercontent.com/44740048/139785995-3330d65a-cfe1-4e92-
 ## Access training file
 [Training File](./training.ipynb) to access the training file.
 
+## Datasets
+Here are the links: https://drive.google.com/file/d/1f6dp72D9WxErXvaZP6KIBLv4-eKpvLZa/view?usp=sharing, https://drive.google.com/file/d/19QUTiAZvF1pFy5BeaV_rc83MeDu8yojv/view?usp=sharing
+
 ## Access paper
 
 [Research Paper](https://worldscientific.com/doi/10.1142/S0219649222500599) to access the research paper.
