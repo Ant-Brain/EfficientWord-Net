@@ -1,6 +1,6 @@
 """
 Needs to be run directly in cli via
-`python -m efficientword.ibm_generate`
+`python -m eff_word_net.ibm_generate`
 
 Can be used to artificially synthesize audio samples for a given hotword
 Uses ibm's demo of cloud neural voice , hence try to use it as low as possible
@@ -21,7 +21,7 @@ def _getSoundFile(word:str,voice:str,out_dir:str):
 
     data = {
         "ssmlText":f"<prosody pitch=\"default\" rate=\"-0%\">{word}</prosody>",
-        "sessionID":"14b211a1-b05a-49a2-9d4b-e31c9836e8e7"
+        "sessionID":"40fdfaa2-c2e1-46fa-baa5-efa85922eb3e"
         }
 
     response = session.post(
@@ -30,10 +30,12 @@ def _getSoundFile(word:str,voice:str,out_dir:str):
         )
     response_json = json.loads(response.text)
     if(response_json["status"]!="success"):
+        print("first request failed")
         return False
     token = response_json["message"].split(" ")[-1]
     audio_response = session.get(
-        f"https://www.ibm.com/demos/live/tts-demo/api/tts/newSynthesize?id={token}&voice={voice}",stream = True)
+        f"https://www.ibm.com/demos/live/tts-demo/api/tts/newSynthesizer?id={token}&voice={voice}",stream = True)
+    print(audio_response.status_code)
     if(audio_response.status_code==200):
         audio_response.raw.decode_content = True
         if(not isdir(out_dir)):
@@ -51,5 +53,8 @@ if __name__=="__main__":
     PATH = str(input("Enter location where audio files will be saved:"))
     for voice in [*USA_VOICES,*UK_VOICES]:
         print(voice)
-        _getSoundFile(WORD,voice,PATH)
+        if _getSoundFile(WORD,voice,PATH) :
+            print("success")
+        else:
+            print("failed")
         sleep(2)

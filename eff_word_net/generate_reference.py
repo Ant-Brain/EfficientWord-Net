@@ -1,19 +1,30 @@
 """
 Can be run directly in cli 
-`python -m efficientword.generate_reference`
+`python -m eff_word_net.generate_reference`
 """
-from eff_word_net.audio_processing import audioToVector, fixPaddingIssues
 import os , glob
 import numpy as np
 import json
 from eff_word_net.package_installation_scripts import check_install_librosa
+from eff_word_net.audio_processing import (
+    ModelType,
+    MODEL_TYPE_MAPPER
+)
 
 check_install_librosa()
 
 import librosa
+import typer
+from rich.progress import track
 
+def generate_reference_file(
+        input_dir:str = typer.Option(...),
+        output_dir:str = typer.Option(...),
+        wakeword:str = typer.Option(...),
+        model_type:ModelType = typer.Option(..., case_sensitive=False),
+        debug:bool=typer.Option(False)
+    ):
 
-def generate_reference_file(input_dir:str,output_dir:str,wakeword:str,debug:bool=False):
     """
     Generates reference files for few shot learning comparison
 
@@ -25,14 +36,18 @@ def generate_reference_file(input_dir:str,output_dir:str,wakeword:str,debug:bool
         output_dir: directory where generated reference file will
         be stored
 
-        debug=False : when true prints out the distance matrix of
-        the samples
-
+        wakeword: name of the wakeword
+        
+        model_type: type of the model to be used
+        
+        debug: self explanatory
     Out Parameters:
 
         None
 
     """
+    #print(model_type)
+    model = MODEL_TYPE_MAPPER[model_type.value]()
 
     assert(os.path.isdir(input_dir))
     assert(os.path.isdir(output_dir))
@@ -43,11 +58,12 @@ def generate_reference_file(input_dir:str,output_dir:str,wakeword:str,debug:bool
         *glob.glob(input_dir+"/*.wav")
     ]
 
-    for audio_file in audio_files :
+
+    for audio_file in track(audio_files, description="Generating Embeddings.. ") :
         x,_ = librosa.load(audio_file,sr=16000)
         embeddings.append(
-                audioToVector(
-                    fixPaddingIssues(x)
+                model.audioToVector(
+                    model.fixPaddingIssues(x)
                 )
             )
 
@@ -69,13 +85,11 @@ def generate_reference_file(input_dir:str,output_dir:str,wakeword:str,debug:bool
     open(os.path.join(output_dir,f"{wakeword}_ref.json") ,'w').write(
             json.dumps(
                 {
-                    "embeddings":embeddings.astype(float).tolist()
+                    "embeddings":embeddings.astype(float).tolist(),
+                    "model_type":model_type.value
                     }
                 )
             )
+
 if __name__ == "__main__" :
-    generate_reference_file(
-            input("Paste Path of folder Containing audio files:"),
-            input("Paste Path of location to save *_ref.json :"),
-            input("Enter Wakeword Name                                 :")
-            )
+    typer.run(generate_reference_file)

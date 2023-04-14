@@ -107,11 +107,15 @@ The pathname of the generated wakeword needs to passed to the HotwordDetector de
 ```python
 HotwordDetector(
         hotword="hello",
+        model = Resnet_50_Arc_loss(),
         reference_file = "/full/path/name/of/hello_ref.json"),
         threshold=0.9, #min confidence required to consider a trigger
         relaxation_time = 0.8 #default value ,in seconds
 )
 ```
+
+The model variable can receive an instance of Resnet_50_Arc_loss or First_Iteration_Siamese
+
 relaxation time parameter is used to determine the min time between any 2 triggers, any potential triggers before the relaxation_time will be cancelled
 
 The detector operates on a sliding widow approach resulting in multiple triggers for single utterance of a hotword, the relaxation_time parameter can used to control the multiple triggers, in most cases 0.8sec(default) will do 
@@ -133,14 +137,25 @@ from eff_word_net import samples_loc
 import os
 from eff_word_net.streams import SimpleMicStream
 from eff_word_net.engine import HotwordDetector
+
+from eff_word_net.audio_processing import Resnet50_Arc_loss
+
 from eff_word_net import samples_loc
 
-mycroft_hw = HotwordDetector(
-        hotword="Mycroft",
-        reference_file = os.path.join(samples_loc,"mycroft_ref.json"),
-    )
+base_model = Resnet50_Arc_loss()
 
-mic_stream = SimpleMicStream()
+mycroft_hw = HotwordDetector(
+    hotword="mycroft",
+    model = base_model,
+    reference_file="mycroft_ref.json",
+    threshold=0.7,
+    relaxation_time=2
+)
+
+mic_stream = SimpleMicStream(
+    window_length=1.5,
+    sliding_window=0.75,
+)
 mic_stream.start_stream()
 
 print("Say Mycroft ")
@@ -163,51 +178,78 @@ The library provides a computation friendly way
 to detect multiple hotwords from a given stream, instead of running `scoreFrame()` of each wakeword individually
 
 ```python
+
 import os
 from eff_word_net.streams import SimpleMicStream
 from eff_word_net import samples_loc
 print(samples_loc)
 
-alexa_hw = HotwordDetector(
-        hotword="Alexa",
-        reference_file = os.path.join(samples_loc,"alexa_ref.json"),
-    )
 
-siri_hw = HotwordDetector(
-        hotword="Siri",
-        reference_file = os.path.join(samples_loc,"siri_ref.json"),
-    )
+base_model = Resnet50_Arc_loss()
 
 mycroft_hw = HotwordDetector(
-        hotword="mycroft",
-        reference_file = os.path.join(samples_loc,"mycroft_ref.json"),
-        activation_count=3
-    )
+    hotword="mycroft",
+    model = base_model,
+    reference_file=os.path.join(samples_loc,"mycroft_ref.json"),
+    threshold=0.7,
+    relaxation_time=2
+)
 
-multi_hw_engine = MultiHotwordDetector(
-        detector_collection = [
-            alexa_hw,
-            siri_hw,
-            mycroft_hw,
-        ],
-    )
+alexa_hw = HotwordDetector(
+        hotword="alexa",
+        model=base_model,
+        reference_file=os.path.join(samples_loc,"alexa_ref.json"),
+        threshold=0.7,
+        relaxation_time=2,
+        #verbose=True
+)
 
-mic_stream = SimpleMicStream()
+
+computer_hw = HotwordDetector(
+    hotword="computer",
+    model=base_model,
+    reference_file=os.path.join(samples_loc,"computer_ref.json"),
+    threshold=0.7,
+    relaxation_time=2,
+    #verbose=True
+)
+
+multi_hotword_detector = MultiHotwordDetector(
+    [mycroft_hw, alexa_hw, computer_hw],
+    model=base_model,
+    continuous=True,
+)
+
+mic_stream = SimpleMicStream(window_length_secs=1.5, sliding_window_secs=0.75)
 mic_stream.start_stream()
 
-print("Say Mycroft / Alexa / Siri")
+print("Say ", " / ".join([x.hotword for x in multi_hotword_detector.detector_collection]))
 
 while True :
     frame = mic_stream.getFrame()
-    result = multi_hw_engine.findBestMatch(frame)
+    result = multi_hotword_detector.findBestMatch(frame)
     if(None not in result):
         print(result[0],f",Confidence {result[1]:0.4f}")
+
 
 ```
 <br>
 
 Access documentation of the library from here : https://ant-brain.github.io/EfficientWord-Net/
 
+## Change notes from 0.2.2 to v1.0.1
+### New Model Addition Resnet_50_Arc_loss with huge improvements !!
+Trained a new model from scratch using a modified distilled dataset from MLCommons, used Arcloss logic instead of triplet loss logic
+
+The resultant model created is stored resnet_50_arcloss
+
+The newer model is show casing much better resilience towards background noise and requires fewer samples for good accuracy
+
+Minor changes in the api flow to facilitate easy addition of newer models
+
+Newer model can handle a fixed window length of 1.5 seconds
+
+The old model can still be accessed through first_iteration_siamese
 
 ## Change notes from v0.1.1 to 0.2.2
 major changes to replace complex friking logic of handling poly triggers per utterance into more simpler logic and more simpler api for programmers
@@ -220,6 +262,7 @@ Introduces breaking changes
  
 ## FAQ :
 * **Hotword Perfomance is bad** : if you are having some issue like this , feel to ask the same in [discussions](https://github.com/Ant-Brain/EfficientWord-Net/discussions/4)
+* **Can it run on FPGAs like arduino?** : No , new model Resnet_50_Arcloss is too heavy to run on arduino (Roughly 88Mb) in size, soon we will add support of pruned versions of the model so that it can become light enough to run on tiny devices, for now it should be able to run in Raspberry pi like devices
 
 ## CONTRIBUTION:
 * If you have an ideas to make the project better, feel free to ping us in [discussions](https://github.com/Ant-Brain/EfficientWord-Net/discussions/3)
@@ -230,8 +273,13 @@ Introduces breaking changes
 * Add audio file handler in streams. PR's are welcome.
 * Remove librosa requirement to encourage generating reference files directly in edge devices
 * Add more detailed documentation explaining slider window concept
+* Add model finetuning support
+* Add support for sparse and finegrained pruning where the resultant models could be used for finetuning (already working on the same)
 
 ## SUPPORT US:
+
 Our hotword detector's performance is notably low when compared to Porcupine. We have thought about better NN architectures for the engine and hope to outperform Porcupine. This has been our undergrad project. Hence your support and encouragement will motivate us to develop the engine. If you loved this project recommend this to your peers, give us a 🌟 in Github and a clap 👏 in [medium](https://link.medium.com/yMBmWGM03kb).
+
+Update: Your stars encouraged us to create a new model which is far better , lets make this community grow
 
 ## LICENCSE : [Apache License 2.0](/LICENSE.md)
