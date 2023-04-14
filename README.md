@@ -147,15 +147,16 @@ base_model = Resnet50_Arc_loss()
 mycroft_hw = HotwordDetector(
     hotword="mycroft",
     model = base_model,
-    reference_file="mycroft_ref.json",
+    reference_file=os.path.join(samples_loc, "mycroft_ref.json"),
     threshold=0.7,
     relaxation_time=2
 )
 
 mic_stream = SimpleMicStream(
-    window_length=1.5,
-    sliding_window=0.75,
+    window_length_secs=1.5,
+    sliding_window_secs=0.75,
 )
+
 mic_stream.start_stream()
 
 print("Say Mycroft ")
