@@ -51,7 +51,7 @@ class ModelRawBackend :
         #print("Preprocessing Shape",x.shape[0])
         if(x.shape[0]>self.window_frames):
           return self._randomCrop(x,length=self.window_frames)
-        elif(x.shape[0]<16000):
+        elif(x.shape[0]<self.window_frames):
           return self._addPadding(x,length=self.window_frames)
         else:
           return x
