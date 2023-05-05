@@ -3,19 +3,9 @@
 
 ## Hotword detection based on few-shot learning
 
-Home assistants require special phrases called hotwords to get activated (eg:"ok google")
+Home assistants require special phrases called hotwords to get activated(eg:"ok google").
+EfficientWord-Net is a hotword detection engine based on few-shot learning that allows developers to add custom hotwords to their programs without extra charges. The library is purely written in Python and uses Google's Tflite implementation for faster real-time inference. It is inspired by FaceNet's Siamese Network Architecture and performs the best when 3-4 hotword samples are collected directly from the user.
 
-EfficientWord-Net is an hotword detection engine based on few-shot
-learning inspired from FaceNet's Siamese Network Architecture.
-Works very similar to face recognition , just requires a few samples of your own custom hotword to get going. 
-**No extra training or huge datasets required!!**
-This will allow developers to add custom hotwords to their programs without a sweat or any extra charges.
-Just like google assistant's hotword detector, the engine performs the best when 3-4 hotword samples are collected directly from the user
-This repository is an official implemenation of EfficientWord-Net as
-a python library from the authors.
-
-The library is purely written with python and uses Google's Tflite
-implemenation for faster realtime inference.
 
 ### Demo of EfficientWord-Net in Pi
 
@@ -67,8 +57,7 @@ import eff_word_net
 <br>
 
 ## Demo
-After installing the packages, you can run the Demo
-script inbuilt with library (ensure you have a working mic).
+After installing the packages, you can run the Demo script inbuilt with library (ensure you have a working mic).
 
 Accesss Documentation from : https://ant-brain.github.io/EfficientWord-Net/
 
@@ -80,24 +69,20 @@ python -m eff_word_net.engine
 
 ## Generating Custom Wakewords
 
-For any new hotword, the library needs information about the hotword, this
-information is obtained from a file called `{wakeword}_ref.json`. 
+For any new hotword, the library needs information about the hotword, this information is obtained from a file called `{wakeword}_ref.json`. 
 Eg: For the wakeword 'alexa', the library would need the file called `alexa_ref.json`
 
 These files can be generated with the following procedure:
 
-One needs to collect few 4 to 10 uniquely sounding pronunciations
-of a given wakeword. Then put them into a seperate folder, which doesnt contain 
-anything else.
+One needs to collect few 4 to 10 uniquely sounding pronunciations of a given wakeword. Then put them into a seperate folder, which doesnt contain anything else.
 
-Or one could use the following command to generate audio files for a given word, uses ibm neural tts demo api, Kindly dont over use it for our sake (lol)
+Or one could use the following command to generate audio files for a given word, uses ibm neural tts demo api. Kindly dont over use it for our sake.
 
 ```bash
 python -m eff_word_net.ibm_generate
 ```
 
-Finally run this command, it will ask for the input folder's location 
-(containing the audio files) and the output folder (where _ref.json file will be stored).
+Finally run this command, it will ask for the input folder's location (containing the audio files) and the output folder (where _ref.json file will be stored).
 ```
 python -m eff_word_net.generate_reference
 ```
@@ -114,11 +99,10 @@ HotwordDetector(
 )
 ```
 
-The model variable can receive an instance of Resnet_50_Arc_loss or First_Iteration_Siamese
+The model variable can receive an instance of Resnet_50_Arc_loss or First_Iteration_Siamese.
 
-relaxation time parameter is used to determine the min time between any 2 triggers, any potential triggers before the relaxation_time will be cancelled
-
-The detector operates on a sliding widow approach resulting in multiple triggers for single utterance of a hotword, the relaxation_time parameter can used to control the multiple triggers, in most cases 0.8sec(default) will do 
+Relaxation time parameter is used to determine the min time between any 2 triggers, any potential triggers before the relaxation_time will be cancelled.
+The detector operates on a sliding widow approach resulting in multiple triggers for single utterance of a hotword, the relaxation_time parameter can used to control the multiple triggers, in most cases 0.8sec(default) will do. 
 
 <br>
 
@@ -240,42 +224,42 @@ Access documentation of the library from here : https://ant-brain.github.io/Effi
 
 ## Change notes from 0.2.2 to v1.0.1
 ### New Model Addition Resnet_50_Arc_loss with huge improvements !!
-Trained a new model from scratch using a modified distilled dataset from MLCommons, used Arcloss logic instead of triplet loss logic
+Trained a new model from scratch using a modified distilled dataset from MLCommons, used Arcloss function instead of triplet loss function.
 
-The resultant model created is stored resnet_50_arcloss
+The resultant model created is stored resnet_50_arcloss.
 
-The newer model is show casing much better resilience towards background noise and requires fewer samples for good accuracy
+The newer model is show casing much better resilience towards background noise and requires fewer samples for good accuracy.
 
-Minor changes in the api flow to facilitate easy addition of newer models
+Minor changes in the api flow to facilitate easy addition of newer models.
 
-Newer model can handle a fixed window length of 1.5 seconds
+Newer model can handle a fixed window length of 1.5 seconds.
 
-The old model can still be accessed through first_iteration_siamese
+The old model can still be accessed through first_iteration_siamese.
 
 ## Change notes from v0.1.1 to 0.2.2
-major changes to replace complex friking logic of handling poly triggers per utterance into more simpler logic and more simpler api for programmers
+Major changes to replace complex friking logic of handling poly triggers per utterance into more simpler logic and more simpler api for programmers.
 
 Introduces breaking changes
 
 ## Limitations in Current model
-- trained on single words , hence may result in bizare behaviour on using phrases like "Hey xxx"
-- audio processing window limited to 1 sec. Hence will not work effectively for longer hotwords
+- Trained on single words , hence may result in bizare behaviour on using phrases like "Hey xxx".
+- Audio processing window limited to 1 sec. Hence will not work effectively for longer hotwords.
  
 ## FAQ :
 * **Hotword Perfomance is bad** : if you are having some issue like this , feel to ask the same in [discussions](https://github.com/Ant-Brain/EfficientWord-Net/discussions/4)
 * **Can it run on FPGAs like arduino?** : No , new model Resnet_50_Arcloss is too heavy to run on arduino (Roughly 88Mb) in size, soon we will add support of pruned versions of the model so that it can become light enough to run on tiny devices, for now it should be able to run in Raspberry pi like devices
 
 ## CONTRIBUTION:
-* If you have an ideas to make the project better, feel free to ping us in [discussions](https://github.com/Ant-Brain/EfficientWord-Net/discussions/3)
+* If you have an ideas to make the project better, feel free to ping us in [discussions](https://github.com/Ant-Brain/EfficientWord-Net/discussions/3).
 * The current [logmelcalc.tflite](/eff_word_net/logmelcalc.tflite) graph can convert only 1 audio frame to Log Mel Spectrogram at a time. It will be of a great help if tensorflow guru's outthere help us out with this.
 
 ## TODO :
 
 * Add audio file handler in streams. PR's are welcome.
-* Remove librosa requirement to encourage generating reference files directly in edge devices
-* Add more detailed documentation explaining slider window concept
-* Add model finetuning support
-* Add support for sparse and finegrained pruning where the resultant models could be used for finetuning (already working on the same)
+* Remove librosa requirement to encourage generating reference files directly in edge devices.
+* Add more detailed documentation explaining slider window concept.
+* Add model finetuning support.
+* Add support for sparse and finegrained pruning where the resultant models could be used for finetuning (already working on the same).
 
 ## SUPPORT US:
 
