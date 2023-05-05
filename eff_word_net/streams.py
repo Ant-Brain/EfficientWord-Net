@@ -91,8 +91,8 @@ class SimpleMicStream(CustomAudioStream) :
             open_stream = mic_stream.start_stream,
             close_stream = mic_stream.stop_stream,
             get_next_frame = lambda : (
-                np.frombuffer(mic_stream.read(CHUNK),dtype=np.int16)
-            ),
-            window_length_secs=window_length_secs,
-            sliding_window_secs=sliding_window_secs
+                np.frombuffer(mic_stream.read(CHUNK,exception_on_overflow = False),dtype=np.int16) 
+                ),
+                 window_length_secs=window_length_secs,
+                sliding_window_secs=sliding_window_secs
         )
