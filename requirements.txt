@@ -1,4 +1,4 @@
-numpy==1.22.0
-PyAudio==0.2.11
+numpy==1.24.0
+onnxruntime==1.15.1
+PyAudio==0.2.13
 requests==2.26.0
-onnxruntime>=1.14.1
