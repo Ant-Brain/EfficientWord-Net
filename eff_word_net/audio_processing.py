@@ -1,5 +1,8 @@
-import glob
-import tflite_runtime.interpreter as tflite
+import sys
+if sys.platform=="linux":
+    import tflite_runtime.interpreter as tflite
+else:
+    from tensorflow import lite as tflite
 import os
 import numpy as np
 import random

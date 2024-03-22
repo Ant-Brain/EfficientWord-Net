@@ -1,5 +1,5 @@
 # EfficientWord-Net
-![Versions : 3.6 ,3.7,3.8,3.9](https://camo.githubusercontent.com/a7b5b417de938c1faf3602c7f48f26fde8761a977be85390fd6c0d191e210ba8/68747470733a2f2f696d672e736869656c64732e696f2f707970692f707976657273696f6e732f74656e736f72666c6f772e7376673f7374796c653d706c6173746963)
+![Versions : 3.8, 3.9, 3.10, 3.11, 3.12](https://camo.githubusercontent.com/a7b5b417de938c1faf3602c7f48f26fde8761a977be85390fd6c0d191e210ba8/68747470733a2f2f696d672e736869656c64732e696f2f707970692f707976657273696f6e732f74656e736f72666c6f772e7376673f7374796c653d706c6173746963)
 
 ## Hotword detection based on few-shot learning
 
@@ -25,7 +25,7 @@ Here are the links: https://drive.google.com/file/d/1f6dp72D9WxErXvaZP6KIBLv4-eK
 ## Python Version Requirements
 
 This Library works between python versions:
-    `3.6 to 3.9`
+    `3.8 to 3.12`
 <br>
 
 ## Dependencies Installation
@@ -37,6 +37,7 @@ Before running the pip installation command for the library, few dependencies ne
 Mac OS M* and Raspberry Pi users might have to compile these dependecies.
 
 ***tflite*** package cannot be listed in requirements.txt hence will be automatically installed when the package is initialized in the system.
+On Windows and Mac, use tensorflow instead.
 
 ***librosa*** package is not required for inference only cases , however when generate_reference is called , will be automatically installed.
 
