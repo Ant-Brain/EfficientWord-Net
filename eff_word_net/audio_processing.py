@@ -12,7 +12,8 @@ from eff_word_net.audio_utils import logfbank
 LIB_FOLDER_LOCATION = os.path.dirname(os.path.realpath(__file__))
 
 class ModelRawBackend :
-    def __init__(self) :
+    def __init__(self, use_quantized_model=False):
+        self.use_quantized_model = use_quantized_model
         self.window_length = None
         self.window_frames = None
         pass 
@@ -64,6 +65,12 @@ class ModelRawBackend :
 
 class First_Iteration_Siamese(ModelRawBackend) :
     def __init__(self) :
+        super().__init__()
+        
+        if self.use_quantized_model:
+            # TODO: Implement a quantized model
+            print("Quantized model not implemented yet, using default model instead")
+
         self.window_length = 1.0 # 1 second
         self.window_frames = int(self.window_length * 16000)     
         self.logmelcalc_interpreter = tflite.Interpreter(
@@ -144,16 +151,25 @@ class First_Iteration_Siamese(ModelRawBackend) :
     
 class Resnet50_Arc_loss(ModelRawBackend):
     def __init__(self):
+        super().__init__()
         
         self.window_length = 1.5
         self.window_frames = int(self.window_length * 16000)
 
-        self.onnx_sess = rt.InferenceSession(
-            os.path.join(
-            LIB_FOLDER_LOCATION, "models/resnet_50_arc/slim_93%_accuracy_72.7390%.onnx"),
-            sess_options= rt.SessionOptions(),
-            providers=["CPUExecutionProvider"]
-        )
+        if self.use_quantized_model:
+            self.onnx_sess = rt.InferenceSession(
+                os.path.join(
+                    LIB_FOLDER_LOCATION, "models/resnet_50_arc/slim_93%_accuracy_72.7390%_qint8.onnx"),
+                sess_options= rt.SessionOptions(),
+                providers=["CPUExecutionProvider"]
+            )
+        else:
+            self.onnx_sess = rt.InferenceSession(
+                os.path.join(
+                LIB_FOLDER_LOCATION, "models/resnet_50_arc/slim_93%_accuracy_72.7390%.onnx"),
+                sess_options= rt.SessionOptions(),
+                providers=["CPUExecutionProvider"]
+            )
         
         self.input_name:str = self.onnx_sess.get_inputs()[0].name
         self.output_name:str = self.onnx_sess.get_outputs()[0].name
