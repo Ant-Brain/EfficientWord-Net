@@ -1,5 +1,9 @@
-import glob
-import tflite_runtime.interpreter as tflite
+from eff_word_net.package_installation_scripts import is_arm_cpu
+
+if is_arm_cpu():
+    import tflite_runtime.interpreter as tflite
+else:
+    from tensorflow import lite as tflite
 import os
 import numpy as np
 import random

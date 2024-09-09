@@ -74,3 +74,17 @@ def check_install_librosa(verbose=False, upgrade=False, force=False, **kw):
             print('.'*50)
         print('All done! Carry on.')
 
+def is_arm_cpu():
+    """
+    Check if the CPU architecture is ARM.
+
+    This function determines whether the current system is running on
+    an ARM CPU by inspecting the machine architecture string provided
+    by the platform module.
+
+    Returns:
+        bool: True if the CPU is ARM, False otherwise.
+    """
+    import platform
+    architecture = platform.machine()
+    return architecture.startswith('arm') or architecture.startswith('aarch')
