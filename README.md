@@ -241,6 +241,7 @@ Major changes to replace complex friking logic of handling poly triggers per utt
 
 Introduces breaking changes
 
+-C++ implementation of current model is [here](https://github.com/Ant-Brain/EfficientWord-Net/issues/56).
 ## Limitations in Current model
 - Trained on single words , hence may result in bizare behaviour on using phrases like "Hey xxx".
 - Audio processing window limited to 1 sec. Hence will not work effectively for longer hotwords.
