@@ -97,56 +97,33 @@ class HotwordDetector :
             self.__last_activation_time = current_time
         
         return score
-          
+    
+    ## EDIT 2025.03.10 
+    ## RMS calculation ADD
     def scoreFrame(
             self,
-            inp_audio_frame:np.array,
-            unsafe:bool = False) -> float :
+            inp_audio_frame: np.array,
+            unsafe: bool = False) -> Union[dict, None]:
         """
         Converts given audio frame to embedding and checks for similarity
-        with given reference file
-
-        Inp Parameters:
-
-            inp_audio_frame : np.array of 1channel 1 sec 16000Hz sampled audio 
-            frame
-            unsafe : bool value, set to False by default to prevent engine
-            processing continuous speech or silence, to minimalize false positives
-
-        **Note : change unsafe to True only if you know what you are doing**
-
-        Out Parameters:
-
-            {
-                "match":True or False,
-                "confidence":float value
-            }
-                 or 
-            None when no voice activity is identified
+        with given reference file. 이제 RMS 값도 함께 반환합니다.
         """
-
-        if(not unsafe):
-            upperPoint = max(
-                (
-                    inp_audio_frame/inp_audio_frame.max()
-                )[:RATE//10]
-            )
-            if(upperPoint > 0.2):
+        # 입력 프레임의 RMS 계산 (전체 프레임 기준)
+        rms_value = np.sqrt(np.mean(np.square(inp_audio_frame.astype(np.float32))))
+        
+        if not unsafe:
+            upperPoint = max((inp_audio_frame/inp_audio_frame.max())[:RATE//10])
+            if upperPoint > 0.2:
                 return None
 
-        #assert inp_audio_frame.shape == (RATE,), \
-        #    f"Audio frame needs to be a 1 sec {RATE}Hz sampled vector"
-
-        score = self.scoreVector(
-            self.model.audioToVector(
-                inp_audio_frame
-            )
-        )
+        score = self.scoreVector(self.model.audioToVector(inp_audio_frame))
 
         return {
-            "match":score >= self.threshold,
-            "confidence":score
+            "match": score >= self.threshold,
+            "confidence": score,
+            "rms": rms_value
         }
+
 
 HotwordDetectorArray = List[HotwordDetector]
 MatchInfo = Tuple[HotwordDetector,float]
