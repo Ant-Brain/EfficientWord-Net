@@ -12,10 +12,7 @@ Home assistants require special phrases called hotwords to get activated (e.g., 
 
 ## Datasets
 
-Here are the links:
-
-- [Dataset 1](https://drive.google.com/file/d/1f6dp72D9WxErXvaZP6KIBLv4-eKpvLZa/view?usp=sharing)
-- [Dataset 2](https://drive.google.com/file/d/19QUTiAZvF1pFy5BeaV_rc83MeDu8yojv/view?usp=sharing)
+Checkout the people speech spoken words dataset, the Resnet_50_Arc_loss was trained on the same  <https://mlcommons.org/datasets/multilingual-spoken-words/>
 
 ## Access Paper
 
