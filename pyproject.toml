@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "EfficientWord-Net"
-version = "1.0.3"
+version = "1.0.4"
 description = "Few Shot Learning based Hotword Detection Engine"
 readme = "README.md"
 requires-python = ">=3.10,<3.15"

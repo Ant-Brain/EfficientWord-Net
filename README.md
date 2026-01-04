@@ -212,6 +212,10 @@ Here's the corrected version of the README.md file with improved grammar and for
 
 @Stypox has provided a gist with which one can perform inference for the same in C++ <https://gist.github.com/Stypox/2bf47017ea5361776d9c096e886e0540>
 
+## Change notes from v1.0.3 to v1.0.4
+
+- Stability related improvements
+
 ## Change notes from v1.0.2 to v1.0.3
 
 - Pivoted to more cross platform friendly dependencies
