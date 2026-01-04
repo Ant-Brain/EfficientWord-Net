@@ -50,6 +50,8 @@ def generate_reference_file(
 
     audio_files = [*glob.glob(input_dir + "/*.mp3"), *glob.glob(input_dir + "/*.wav")]
 
+    asset len(audio_files) > 0, "only mp3 and wav files are supported!!!! no mp3 or wav file is found"
+
     for audio_file in track(audio_files, description="Generating Embeddings.. "):
         audio = AudioSegment.from_file(audio_file)
         audio = audio.set_frame_rate(16000).set_channels(1)
