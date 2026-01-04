@@ -208,6 +208,10 @@ Access documentation of the library from here : <https://ant-brain.github.io/Eff
 
 Here's the corrected version of the README.md file with improved grammar and formatting:
 
+## Want the same in C++ have a look at the following gist
+
+@Stypox has provided a gist with which one can perform inference for the same in C++ <https://gist.github.com/Stypox/2bf47017ea5361776d9c096e886e0540>
+
 ## Change notes from v1.0.2 to v1.0.3
 
 - Pivoted to more cross platform friendly dependencies
@@ -244,12 +248,10 @@ Here's the corrected version of the README.md file with improved grammar and for
 ## Contribution
 
 - If you have ideas to make the project better, feel free to ping us in the [discussions](https://github.com/Ant-Brain/EfficientWord-Net/discussions/3).
-- The current [logmelcalc.tflite](/eff_word_net/logmelcalc.tflite) graph can convert only 1 audio frame to Log Mel Spectrogram at a time. It would be of great help if TensorFlow gurus out there could assist us with this.
 
 ## TODO
 
 - Add audio file handler in streams. PRs are welcome.
-- Remove librosa requirement to encourage generating reference files directly on edge devices.
 - Add more detailed documentation explaining the sliding window concept.
 - Add model fine-tuning support.
 - Add support for sparse and fine-grained pruning where the resultant models could be used for fine-tuning (already working on this).
