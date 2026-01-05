@@ -69,6 +69,16 @@ These files can be generated with the following procedure:
 python -m eff_word_net.generate_reference
 ```
 
+Note: Only WAV files are supported. If your audio files are in other formats, convert them to WAV using https://ffmpegwasm.netlify.app/playground, which performs conversion entirely in your browser without uploading files.
+
+Once you have generated the reference file, you can test the hotword detection using:
+
+```
+python -m eff_word_net.single_word_test --reference-file /full/path/to/your_wakeword_ref.json --hotword "your_wakeword"
+```
+
+Ensure you have a working microphone.
+
 The pathname of the generated wakeword needs to be passed to the HotwordDetector instance:
 
 ```python
@@ -212,6 +222,13 @@ Here's the corrected version of the README.md file with improved grammar and for
 ## Change notes from v1.0.3 to v1.0.4
 
 - Stability related improvements
+
+## Change notes from v1.0.4 to v1.0.5
+
+- Pivoted from pydub to soundfile for audio file processing to improve reliability.
+- Dropped support for MP3 files in reference generation.
+- Updated documentation to guide users on converting non-WAV files.
+- Added single_word_test module with typer support for testing custom reference files.
 
 ## Change notes from v1.0.2 to v1.0.3
 

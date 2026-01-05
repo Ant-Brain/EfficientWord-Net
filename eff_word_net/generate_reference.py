@@ -10,7 +10,7 @@ from eff_word_net.audio_processing import ModelType, MODEL_TYPE_MAPPER
 
 import typer
 from rich.progress import track
-from pydub import AudioSegment
+import soundfile as sf
 
 
 def generate_reference_file(
@@ -48,17 +48,23 @@ def generate_reference_file(
     assert os.path.isdir(output_dir)
     embeddings = []
 
-    audio_files = [*glob.glob(input_dir + "/*.mp3"), *glob.glob(input_dir + "/*.wav")]
+    audio_files = [*glob.glob(input_dir + "/*.wav")]
 
-    asset len(audio_files) > 0, "only mp3 and wav files are supported!!!! no mp3 or wav file is found"
+    assert len(audio_files) > 0, (
+        "only wav files are supported!!!! no wav file is found. Ensure files are 16kHz mono WAV; convert non-WAV formats at https://ffmpegwasm.netlify.app/playground."
+    )
 
     for audio_file in track(audio_files, description="Generating Embeddings.. "):
-        audio = AudioSegment.from_file(audio_file)
-        audio = audio.set_frame_rate(16000).set_channels(1)
-
-        samples = np.array(audio.get_array_of_samples(), dtype=np.float32)
-        x = samples / (2**8 * (audio.sample_width - 1))
-        embeddings.append(model.audioToVector(model.fixPaddingIssues(x)))
+        audio, sr = sf.read(audio_file, dtype="float32")
+        if audio.ndim > 1:
+            audio = audio.mean(axis=1)
+        if sr != 16000:
+            # Resample using linear interpolation
+            old_times = np.arange(len(audio)) / sr
+            new_length = int(len(audio) * 16000 / sr)
+            new_times = np.arange(new_length) / 16000
+            audio = np.interp(new_times, old_times, audio)
+        embeddings.append(model.audioToVector(model.fixPaddingIssues(audio)))
 
     embeddings = np.squeeze(np.array(embeddings))
 

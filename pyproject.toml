@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "EfficientWord-Net"
-version = "1.0.4"
+version = "1.0.5"
 description = "Few Shot Learning based Hotword Detection Engine"
 readme = "README.md"
 requires-python = ">=3.10,<3.15"
@@ -13,8 +13,8 @@ dependencies = [
     "numpy",
     "onnxruntime",
     "pyaudio",
-    "pydub>=0.25.1",
     "requests",
+    "soundfile>=0.13.1",
     "twine>=6.2.0",
     "typer>=0.21.0",
 ]
