@@ -48,10 +48,10 @@ def generate_reference_file(
     assert os.path.isdir(output_dir)
     embeddings = []
 
-    audio_files = [*glob.glob(input_dir + "/*.wav")]
+    audio_files = [*glob.glob(input_dir + "/*.wav"), *glob.glob(input_dir + "/*.mp3")]
 
     assert len(audio_files) > 0, (
-        "only wav files are supported!!!! no wav file is found. Ensure files are 16kHz mono WAV; convert non-WAV formats at https://ffmpegwasm.netlify.app/playground."
+        "only wav and mp3 files are supported!!!! no wav or mp3 file is found. Ensure files are 16kHz mono WAV; convert non-WAV formats at https://ffmpegwasm.netlify.app/playground."
     )
 
     for audio_file in track(audio_files, description="Generating Embeddings.. "):

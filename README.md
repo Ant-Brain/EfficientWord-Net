@@ -69,7 +69,7 @@ These files can be generated with the following procedure:
 python -m eff_word_net.generate_reference
 ```
 
-Note: Only WAV files are supported. If your audio files are in other formats, convert them to WAV using https://ffmpegwasm.netlify.app/playground, which performs conversion entirely in your browser without uploading files.
+Note: Only WAV files are supported. If your audio files are in other formats, convert them to WAV using <https://ffmpegwasm.netlify.app/playground>, which performs conversion entirely in your browser without uploading files.
 
 Once you have generated the reference file, you can test the hotword detection using:
 
@@ -219,9 +219,9 @@ Here's the corrected version of the README.md file with improved grammar and for
 
 @Stypox has provided a gist with which one can perform inference for the same in C++ <https://gist.github.com/Stypox/2bf47017ea5361776d9c096e886e0540>
 
-## Change notes from v1.0.3 to v1.0.4
+## Change notes from v1.0.5 to v1.0.6
 
-- Stability related improvements
+- Added support for mp3 as just now discovered that soundfile library does support mp3 (the added support recently as Copyright for mp3 got expired)
 
 ## Change notes from v1.0.4 to v1.0.5
 
@@ -229,6 +229,10 @@ Here's the corrected version of the README.md file with improved grammar and for
 - Dropped support for MP3 files in reference generation.
 - Updated documentation to guide users on converting non-WAV files.
 - Added single_word_test module with typer support for testing custom reference files.
+
+## Change notes from v1.0.3 to v1.0.4
+
+- Stability related improvements
 
 ## Change notes from v1.0.2 to v1.0.3
 
