@@ -3,6 +3,7 @@ from typing import Tuple , Callable
 import numpy as np
 from eff_word_net.engine import HotwordDetector
 from eff_word_net import RATE
+import librosa
 
 NoParameterFunction = Callable[[],None]
 AudioFrameFunction = Callable[[],np.array]
@@ -96,3 +97,55 @@ class SimpleMicStream(CustomAudioStream) :
                  window_length_secs=window_length_secs,
                 sliding_window_secs=sliding_window_secs
         )
+
+
+class SimpleAudioFileStream(CustomAudioStream):
+    def __init__(self, audio_path, window_length_secs = 1.5, sliding_window_secs = 1 / 8):
+        # Convert target rate to number of samples
+        self._target_frame_length = int(window_length_secs * RATE)
+
+        # Get the original sample rate of the audio
+        self._orig_sr = librosa.get_samplerate(audio_path)
+
+        # Convert to number of samples
+        self._frame_length = int(window_length_secs * self._orig_sr)
+        self._hop_length = int(sliding_window_secs * self._orig_sr)
+
+        # Load the audio for streaming processing
+        stream = librosa.stream(
+            audio_path,
+            block_length=1,
+            frame_length=self._frame_length,
+            hop_length=self._hop_length,
+        )
+
+        self._stream = enumerate(stream)
+
+        CustomAudioStream.__init__(
+            self,
+            open_stream = self.start_stream,
+            close_stream = self.close_stream,
+            get_next_frame = None,
+            window_length_secs=window_length_secs,
+            sliding_window_secs=sliding_window_secs
+        )
+
+    def start_stream(self):
+        pass
+
+    def close_stream(self):
+        pass
+    
+    def getFrame(self):
+        try:
+            i, frame = next(self._stream)
+        except StopIteration:
+            return None
+
+        timestamp = (i * self._hop_length) / self._orig_sr
+        # Resample to 16,000 Hz
+        frame = librosa.resample(frame, orig_sr=self._orig_sr, target_sr=RATE)
+        # We resize frames close to the end
+        frame = np.resize(frame, (self._target_frame_length,))
+
+        return frame, timestamp
